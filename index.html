@@ -7,29 +7,78 @@
 		</style>
 	</head>
 	<body>
-		<script src="build/three.min.js"></script>
+		<script src="js/vendor/three.min.js"></script>
+		<script src="js/vendor/THREEx.KeyboardState.js"></script>
 		<script>
-			var scene = new THREE.Scene();
+
+
+			//CAMERA
+
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
+			//SCENE
+			var scene = new THREE.Scene();
+			scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );//////////////////
+
+
+			// // LIGHTS
+
+			// var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.475 );
+			// directionalLight.position.set( 100, 100, -100 );
+			// scene.add( directionalLight );
+
+
+			// var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1.25 );
+			// hemiLight.color.setHSL( 0.6, 1, 0.75 );
+			// hemiLight.groundColor.setHSL( 0.1, 0.8, 0.7 );
+			// hemiLight.position.y = 500;
+			// scene.add( hemiLight );
+
+			//RENDERER
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
+
+
+			//CUBE
 
 			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
 			scene.add( cube );
 
+
+			var resetCube = function(){
+				cube.position.z =0;
+				cube.position.x = (Math.random()-0.5)*10;				
+			}
+
+			var isCatched = function(){
+				if(Math.round(camera.position.x-cube.position.x)<=0.3)
+					console.log("Yay ");
+				else
+					console.log("No Catch");
+			}
+
+			resetCube();
+
+
 			camera.position.z = 5;
-			var keyboard = new THREE.KeyboardState();
+			var keyboard = new THREEx.KeyboardState();
 			var render = function () {
 				requestAnimationFrame( render );
 
 				// cube.rotation.x += 0.1;
 				// cube.rotation.y += 0.1;
-			if(keyboard.pressed("left")) cube.position.x -= 0.05;
-			if(keyboard.pressed("right")) cube.position.x += 0.05;
+				cube.position.z +=0.05;
+				if(cube.position.z>=camera.position.z) {
+					isCatched();
+					resetCube();
+				};
+				if(keyboard.pressed("left")) camera.position.x -= 0.05;
+				if(keyboard.pressed("right")) camera.position.x += 0.05;
+
+
 				renderer.render(scene, camera);
 			};
 
@@ -37,6 +86,9 @@
 		</script>
 	</body>
 </html>
+
+
+
 
 <!-- <html lang="en">
 	<head>
@@ -63,13 +115,14 @@
 	</head>
 
 	<body>
-		<script src="build/three.min.js"></script>
+		<script src="js/vendor/three.min.js"></script>
 
-		<script src="js/controls/OrbitControls.js"></script>
+		<script src="js/vendor/controls/OrbitControls.js"></script>
 
-		<script src="js/Detector.js"></script>
-		<script src="js/libs/stats.min.js"></script>
+		<script src="js/vendor/Detector.js"></script>
+		<script src="js/vendor/stats.min.js"></script>
 
+		<script src="js/vendor/THREEx.KeyboardState.js"></script>
 		<script type="x-shader/x-vertex" id="vertexShader">
 
 			varying vec3 vWorldPosition;
