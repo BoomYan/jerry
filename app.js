@@ -15,8 +15,8 @@ server.listen(1234);
 
 //app.get('/', );
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
+app.get('/tom', function (req, res) {
+  res.sendFile(__dirname + '/tom.html');
 });
 
 //event listener 
