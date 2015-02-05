@@ -178,7 +178,7 @@
 			}
 
 			var isCatched = function(){
-				if(Math.round(camera.position.x-cube.position.x)<=0.3){
+				if(Math.round(camera.position.x-cube.position.x)<=0.5){
 					console.log("Yay ");
 					document.getElementById('Catch').innerHTML = 'Yay'
 				}
@@ -195,17 +195,7 @@
 			
 			// var aPosX;
 			var aPos;
-
-			// function positionLoop() {
-   //  			requestAnimationFrame(positionLoop);
-   //  			// var positions = ctracker.getCurrentPosition();
-   //  			// aPos=positions[33];
-   //  			//var aPosX=aPos[0];
-   //  			// console.log(aPos[0]);
-			// 		    // positions = [[x_0, y_0], [x_1,y_1], ... ]
-			// 		    // do something with the positions ...
-			// }
-			// positionLoop();
+			var shift=0;
 
 			camera.position.z = 5;
 			var keyboard = new THREEx.KeyboardState();
@@ -217,17 +207,19 @@
 				// cube.rotation.x += 0.1;
 				// cube.rotation.y += 0.1;
 				cube.position.z +=0.08;
-				if(cube.position.z>=camera.position.z) {
+				if(cube.position.z-0.5>=camera.position.z) {
 					isCatched();
 					resetCube();
 				};
-				if(keyboard.pressed("left")) camera.position.x -= 0.05;
-				if(keyboard.pressed("right")) camera.position.x += 0.05;
-				if(aPos){
-					 camera.position.x -= 5*(aPos[0]-120)/1200; //120~-120
-					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
-				}
 
+				// if(keyboard.pressed("left")) camera.position.x -= 0.05;
+				// if(keyboard.pressed("right")) camera.position.x += 0.05;
+				if(aPos){
+					 shift= 5*(aPos[0]-120)/1200; //120~-120
+					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
+
+				}
+				camera.position.x -=shift;
 				renderer.render(scene, camera);
 			};
 
