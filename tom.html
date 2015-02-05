@@ -4,10 +4,13 @@
 		<style>
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
+			a {font-size: 100px;color:blue;}
 		</style>
 	</head>
 	<body>
 	      <video id="videoSource" muted autoplay width="240px" height="100px"></video>
+	      <a id="Catch"></a>
+	      <a id="Count"></a>
 	      	</body>
 		<script src="js/vendor/three.min.js"></script>
 		<script src="js/vendor/THREEx.KeyboardState.js"></script>
@@ -16,6 +19,40 @@
 		<script src="js/vendor/model_pca_20_svm.js"></script>
 <!-- 				<video id="videoel" width="0" height="0" preload="auto" loop>
 				</video> -->
+
+
+		<script type="x-shader/x-vertex" id="vertexShader">
+
+			varying vec3 vWorldPosition;
+
+			void main() {
+
+				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+				vWorldPosition = worldPosition.xyz;
+
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+		</script>
+
+		<script type="x-shader/x-fragment" id="fragmentShader">
+
+			uniform vec3 topColor;
+			uniform vec3 bottomColor;
+			uniform float offset;
+			uniform float exponent;
+
+			varying vec3 vWorldPosition;
+
+			void main() {
+
+				float h = normalize( vWorldPosition + offset ).y;
+				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
+
+			}
+
+		</script>
 		<script>
 
 			//VIDEOINPUT
@@ -38,47 +75,119 @@
 
 			//SCENE
 			var scene = new THREE.Scene();
-			scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );//////////////////
+//			scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );//////////////////
 
+				scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
+				scene.fog.color.setHSL( 0.6, 0, 1 );
 
 			// // LIGHTS
 
-			// var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.475 );
-			// directionalLight.position.set( 100, 100, -100 );
-			// scene.add( directionalLight );
 
+				// LIGHTS
 
-			// var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1.25 );
-			// hemiLight.color.setHSL( 0.6, 1, 0.75 );
-			// hemiLight.groundColor.setHSL( 0.1, 0.8, 0.7 );
-			// hemiLight.position.y = 500;
-			// scene.add( hemiLight );
+				hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+				hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+				hemiLight.position.set( 0, 500, 0 );
+				scene.add( hemiLight );
+
+				//
+
+				dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				dirLight.color.setHSL( 0.1, 1, 0.95 );
+				dirLight.position.set( -1, 1.75, 1 );
+				dirLight.position.multiplyScalar( 50 );
+				scene.add( dirLight );
+
+				dirLight.castShadow = true;
+
+				dirLight.shadowMapWidth = 2048;
+				dirLight.shadowMapHeight = 2048;
+
+				var d = 50;
+
+				dirLight.shadowCameraLeft = -d;
+				dirLight.shadowCameraRight = d;
+				dirLight.shadowCameraTop = d;
+				dirLight.shadowCameraBottom = -d;
+
+				dirLight.shadowCameraFar = 3500;
+				dirLight.shadowBias = -0.0001;
+				dirLight.shadowDarkness = 0.35;
+				dirLight.shadowCameraVisible = false;
+
+				// GROUND
+
+				var groundGeo = new THREE.PlaneBufferGeometry( 10000, 10000 );
+				var groundMat = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
+				groundMat.color.setHSL( 0.095, 1, 0.75 );
+
+				var ground = new THREE.Mesh( groundGeo, groundMat );
+				ground.rotation.x = -Math.PI/2;
+				ground.position.y = -33;
+				scene.add( ground );
+
+				ground.receiveShadow = true;
+
+			// var light = new THREE.PointLight( 0xff0000, 1, 100 );
+			// light.position.set( 0, 0, 10 );
+			// scene.add( light );
 
 			//RENDERER
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMapEnabled = true;
+			renderer.shadowMapType = THREE.PCFSoftShadowMap;
+			renderer.shadowMapCullFace = THREE.CullFaceBack;
 			document.body.appendChild( renderer.domElement );
 
+			// //FLOOR   
+			// var geometry = new THREE.PlaneGeometry( 20, 250, 1, 1 );
+			// var material = new THREE.MeshBasicMaterial( { color: 0xeeeeee } );
+			// var floor = new THREE.Mesh( geometry, material );
+			// floor.material.side = THREE.DoubleSide;
+			// de2ra = function(degree)   { return degree*(Math.PI/180); }
+			// floor.position.y=-1;
+			// floor.rotation.x = de2ra(90);
+			// floor.position.z=-5;
+			// scene.add( floor );
 
-			//CUBE
+
+
+			//Cube0
+
+			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+			var cube0 = new THREE.Mesh( geometry, material );
+			scene.add( cube0 );
+			cube0.position.z=-100;
+			//Cube1
 
 			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
+			cube.castShadow = true;
+			cube.receiveShadow = false;
 			scene.add( cube );
 
 
 			var resetCube = function(){
-				cube.position.z =0;
-				cube.position.x = (Math.random()-0.5)*10;
+				cube.position.z =-5;
+				cube.position.x = (Math.random()-0.5)*20;
 				// console.log(cube.position.x);				
 			}
 
 			var isCatched = function(){
-				if(Math.round(camera.position.x-cube.position.x)<=0.3)
+				if(Math.round(camera.position.x-cube.position.x)<=0.3){
 					console.log("Yay ");
-				else
+					document.getElementById('Catch').innerHTML = 'Yay'
+				}
+				
+				else{
 					console.log("No Catch");
+				
+				document.getElementById('Catch').innerHTML = 'No Catch!'
+			}
 			}
 
 
@@ -87,27 +196,27 @@
 			// var aPosX;
 			var aPos;
 
-			function positionLoop() {
-    			requestAnimationFrame(positionLoop);
-    			var positions = ctracker.getCurrentPosition();
-    			aPos=positions[33];
-    			//var aPosX=aPos[0];
-    			// console.log(aPos[0]);
-					    // positions = [[x_0, y_0], [x_1,y_1], ... ]
-					    // do something with the positions ...
-			}
-			positionLoop();
+			// function positionLoop() {
+   //  			requestAnimationFrame(positionLoop);
+   //  			// var positions = ctracker.getCurrentPosition();
+   //  			// aPos=positions[33];
+   //  			//var aPosX=aPos[0];
+   //  			// console.log(aPos[0]);
+			// 		    // positions = [[x_0, y_0], [x_1,y_1], ... ]
+			// 		    // do something with the positions ...
+			// }
+			// positionLoop();
 
 			camera.position.z = 5;
 			var keyboard = new THREEx.KeyboardState();
 			var render = function () {
-				requestAnimationFrame( render );
 
-
+    			var positions = ctracker.getCurrentPosition();
+    			aPos=positions[33];
 
 				// cube.rotation.x += 0.1;
 				// cube.rotation.y += 0.1;
-				cube.position.z +=0.05;
+				cube.position.z +=0.08;
 				if(cube.position.z>=camera.position.z) {
 					isCatched();
 					resetCube();
@@ -115,14 +224,21 @@
 				if(keyboard.pressed("left")) camera.position.x -= 0.05;
 				if(keyboard.pressed("right")) camera.position.x += 0.05;
 				if(aPos){
-					// camera.position.x -= 2*(aPos[0]-120)/12000;
-					camera.position.x = 20*((240-aPos[0])/240-0.5);
+					 camera.position.x -= 5*(aPos[0]-120)/1200; //120~-120
+					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 
 				renderer.render(scene, camera);
 			};
 
-			render();
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+
+			}
+			animate();
 		</script>
 
 </html>
