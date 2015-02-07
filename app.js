@@ -18,6 +18,9 @@ server.listen(1234);
 app.get('/tom', function (req, res) {
   res.sendFile(__dirname + '/tom.html');
 });
+app.get('/jerry', function (req, res) {
+  res.sendFile(__dirname + '/jerry.html');
+});
 
 //event listener 
 io.on('connection', function (socket) {
