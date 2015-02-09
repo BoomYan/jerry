@@ -20,13 +20,21 @@
 		<script src="js/vendor/OrbitControls.js"></script>
 <!-- 				<video id="videoel" width="0" height="0" preload="auto" loop>
 				</video> -->
+		<script src="/socket.io/socket.io.js"></script>
 		<script>
 
 
 			//UNIVERSAL VARIABLES
 			var cubeSize=1;
 			var disBetTandJ=5;
-			
+			var jerrySpeed=0.08;//0.08
+			var aPos;
+			var shift=0;
+
+			//SOCKET
+			var socket = io.connect('http://localhost:1234');
+
+
 			//CAMERA TRACKER
 			var ctracker = new clm.tracker({useWebGL : true});
 			ctracker.init(pModel);
@@ -120,15 +128,15 @@
 
 			var isCatched = function(){
 				if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
-					console.log("Yay ");
-					document.getElementById('Catch').innerHTML = 'Yay'
+					console.log("Catched!!!");
+					document.getElementById('Catch').innerHTML = 'Catched!!!'
 				}
 				
 				else{
-					console.log("No Catch");
+					console.log("No Catch!!!");
 				
 				document.getElementById('Catch').innerHTML = 'No Catch!'
-			}
+				}
 			}
 			//CONTROLS
 			// var controls = new THREE.OrbitControls( camera );
@@ -136,9 +144,7 @@
 
 			resetJerry();
 			
-			// var aPosX;
-			var aPos;
-			var shift=0;
+
 			//var keyboard = new THREEx.KeyboardState();
     		
 
@@ -148,20 +154,26 @@
     		}
 
 			var updateJerry = function(){
-				jerry.position.z +=0.08;
+				jerry.position.z +=jerrySpeed;
 				faceDetection();
 				if(aPos){
 					 shift= 5*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				jerry.position.x +=shift;
+				socket.emit('jerry', {'x': jerry.position.x, 'y': jerry.position.y, 'z': jerry.position.z});
 			}
 
 			var updateTom = function(){
-				var step=0.3
-				if(tom.position.x>jerry.position.x)
-				tom.position.x -=step;
-				else tom.position.x+=step;
+				// var step=0.3
+				// if(tom.position.x>jerry.position.x)
+				// tom.position.x -=step;
+				// else tom.position.x+=step;
+				socket.on('tom', function(data){
+					tom.position.x=data.x;
+					tom.position.y=data.y;
+					tom.position.z=data.z;
+				});
 			}
 
 
@@ -179,12 +191,13 @@
 			var render = function () {
 
 				updateJerry();
-				updateTom();
+
 				if(Math.abs(jerry.position.z-tom.position.z)<cubeSize) {
 					isCatched();
 					// resetJerry();
-					nextTom();
+					//nextTom();
 				};
+				updateTom();
 				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
 				// controls.update;
 				renderer.render(scene, camera);

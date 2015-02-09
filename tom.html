@@ -15,9 +15,12 @@
 		<script src="js/vendor/three.min.js"></script>
 		<script src="js/vendor/THREEx.KeyboardState.js"></script>
 		<script src="js/vendor/clmtrackr.js"></script>
-		<script src="js/vendor/camera.js"></script>		
+
+	
 		<script src="js/vendor/model_pca_20_svm.js"></script>
 		<script src="js/vendor/OrbitControls.js"></script>
+
+		<script src="/socket.io/socket.io.js"></script>
 <!-- 				<video id="videoel" width="0" height="0" preload="auto" loop>
 				</video> -->
 		<script>
@@ -25,6 +28,15 @@
 			//UNIVERSAL VARIABLES
 			var cubeSize=1;
 			var disBetTandJ=10;
+			var jerrySpeed=0;//0.08
+			var aPos;
+			var shift=0;
+			var keyboard = new THREEx.KeyboardState();
+
+
+			//SOCKET
+			var socket = io.connect('http://localhost:1234');
+
 
 			//CAMERA TRACKER
 			var ctracker = new clm.tracker({useWebGL : true});
@@ -115,27 +127,21 @@
 
 			var isCatched = function(){
 				if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
-					console.log("Yay ");
-					document.getElementById('Catch').innerHTML = 'Yay'
+					console.log("Catched!!!");
+					document.getElementById('Catch').innerHTML = 'Catched!!!'
 				}
 				
 				else{
-					console.log("No Catch");
+					console.log("No Catch!!!");
 				
 				document.getElementById('Catch').innerHTML = 'No Catch!'
-			}
+				}
 			}
 			//CONTROLS
 			var controls = new THREE.OrbitControls( camera );
 
 
 			resetJerry();
-			
-			// var aPosX;
-			var aPos;
-			var shift=0;
-			//var keyboard = new THREEx.KeyboardState();
-
 
     		
     		var faceDetection = function(){
@@ -143,25 +149,41 @@
     			aPos=positions[33];
     		}
 
+			var emitTom = function(){
+				socket.emit('tom', {'x': tom.position.x, 'y': tom.position.y, 'z': tom.position.z});				
+			}
+
 			var updateJerry = function(){
-				jerry.position.z +=0.08;
+				//jerry.position.z +=jerrySpeed;
+				socket.on('jerry', function(data){
+					//console.log('received jerry socket');
+					jerry.position.x=data.x;
+					jerry.position.y=data.y;
+					jerry.position.z=data.z;
+				});
 			}
 
 			var updateTom = function(){
 
-				// if(keyboard.pressed("left")) tom.position.x -= 0.05;
-				// if(keyboard.pressed("right")) tom.position.x += 0.05;
+				 // if(keyboard.pressed("left")) tom.position.x -= 0.05;
+				 // if(keyboard.pressed("right")) tom.position.x += 0.05;
 				faceDetection();
 				if(aPos){
 					 shift= 5*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				tom.position.x -=shift;
+
+				emitTom();
+
 			}
 
+
+
 			var nextTom = function(){
-				tom.position.z+=disBetTandJ;
-				cube0.position.z+=disBetTandJ;
+				tom.position.z=jerry.position.z+disBetTandJ;
+				cube0.position.z+=tom.position.z-100;
+				emitTom();
 			}
 
 			var setCamera = function(x,y,z){
@@ -173,12 +195,13 @@
 			var render = function () {
 
 				updateJerry();
-				updateTom();
-				if(Math.abs(jerry.position.z-tom.position.z)<cubeSize) {
+
+				if((tom.position.z-jerry.position.z)<cubeSize) {
 					isCatched();
 					//resetJerry();
 					nextTom();
 				};
+				updateTom();
 				setCamera(tom.position.x,tom.position.y,tom.position.z);
 				// controls.update;
 				renderer.render(scene, camera);

@@ -25,18 +25,14 @@ app.get('/jerry', function (req, res) {
 //event listener 
 io.on('connection', function (socket) {
 
-	var obj = {
-		'hello': 'world'
-	};
-  socket.emit('news', obj);
-
-  socket.on('my other event', function (data) {
-    console.log(data);
+  socket.on('tom', function (data) {
+    // console.log(socket.id);
+    socket.broadcast.emit('tom', data);
   });
 
-  socket.on('wtf', function(data){
-  	console.log(socket.id);
-  	socket.broadcast.emit('wtf', data);
+  socket.on('jerry', function(data){
+  	// console.log(socket.id);
+  	socket.broadcast.emit('jerry', data);
   });
 
 });
