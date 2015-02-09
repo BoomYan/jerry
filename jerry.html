@@ -8,7 +8,7 @@
 		</style>
 	</head>
 	<body>
-	      <video id="videoSource" muted autoplay width="240px" height="100px"></video>
+	      <video id="videoSource" muted autoplay width="240px" height="200px"></video>
 	      <a id="Catch"></a>
 	      <a id="Count"></a>
 	      	</body>
@@ -18,8 +18,6 @@
 		<script src="js/vendor/camera.js"></script>		
 		<script src="js/vendor/model_pca_20_svm.js"></script>
 		<script src="js/vendor/OrbitControls.js"></script>
-<!-- 				<video id="videoel" width="0" height="0" preload="auto" loop>
-				</video> -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 
@@ -32,7 +30,7 @@
 			var shift=0;
 
 			//SOCKET
-			var socket = io.connect('http://localhost');
+			var socket = io.connect('http://' + location.host);
 
 
 			//CAMERA TRACKER
@@ -120,7 +118,7 @@
 			scene.add( tom );
 			tom.position.z = disBetTandJ;
 
-			var resetJerry = function(){
+			var resetPosition = function(){
 				jerry.position.z =-5;
 				jerry.position.x = (Math.random()-0.5)*20;
 				// console.log(cube.position.x);				
@@ -142,7 +140,7 @@
 			// var controls = new THREE.OrbitControls( camera );
 
 
-			resetJerry();
+			resetPosition();
 			
 
 			//var keyboard = new THREEx.KeyboardState();
@@ -169,17 +167,17 @@
 				// if(tom.position.x>jerry.position.x)
 				// tom.position.x -=step;
 				// else tom.position.x+=step;
+			}
 				socket.on('tom', function(data){
 					tom.position.x=data.x;
 					tom.position.y=data.y;
 					tom.position.z=data.z;
 				});
-			}
+			
 
 
-			var nextTom = function(){
-				tom.position.z+=disBetTandJ;
-				cube0.position.z+=disBetTandJ;
+			var updateCube0 = function(){
+				cube0.position.z=jerry.position.z+100;
 			}
 
 			var setCamera = function(x,y,z){
@@ -196,6 +194,7 @@
 					isCatched();
 					// resetJerry();
 					//nextTom();
+					updateCube0();
 				};
 				updateTom();
 				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);

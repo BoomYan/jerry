@@ -3,7 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var ejs = require('ejs');
-var portNumber = server.listen(process.env.PORT || 1234);
+var portNumber = process.env.PORT || 1234;
 
 app.set('views', __dirname); //????????????
 
@@ -14,7 +14,11 @@ app.use(express.static(__dirname + '/public'));
 
 server.listen(portNumber);
 
-//app.get('/', );
+console.log(portNumber);
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/tom.html');
+});
 
 app.get('/tom', function (req, res) {
   res.sendFile(__dirname + '/tom.html');
@@ -32,8 +36,17 @@ io.on('connection', function (socket) {
   });
 
   socket.on('jerry', function(data){
-  	// console.log(socket.id);
+  	console.log(socket.id);
   	socket.broadcast.emit('jerry', data);
   });
+
+
+  // socket.on('reset', function (data) {
+  //   // console.log(socket.id);
+  //   data = {'x': 0, 'y': 0, 'z': 10}
+  //   socket.broadcast.emit('tom', data);
+  //   data = {'x': 0, 'y': 0, 'z': -5}
+  //   socket.broadcast.emit('jerry', data); 
+  // });
 
 });

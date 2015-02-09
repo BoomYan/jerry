@@ -8,7 +8,7 @@
 		</style>
 	</head>
 	<body>
-	      <video id="videoSource" muted autoplay width="240px" height="100px"></video>
+	      <video id="videoSource" muted autoplay width="240px" height="200px"></video>
 	      <a id="Catch"></a>
 	      <a id="Count"></a>
 	      	</body>
@@ -16,13 +16,12 @@
 		<script src="js/vendor/THREEx.KeyboardState.js"></script>
 		<script src="js/vendor/clmtrackr.js"></script>
 
-	
+		<script src="js/vendor/camera.js"></script>	
 		<script src="js/vendor/model_pca_20_svm.js"></script>
 		<script src="js/vendor/OrbitControls.js"></script>
 
 		<script src="/socket.io/socket.io.js"></script>
-<!-- 				<video id="videoel" width="0" height="0" preload="auto" loop>
-				</video> -->
+
 		<script>
 
 			//UNIVERSAL VARIABLES
@@ -35,9 +34,8 @@
 
 
 			//SOCKET
-			var socket = io.connect('http://localhost');
-
-
+			var socket = io.connect('http://' + location.host);
+			console.log(location.port);
 			//CAMERA TRACKER
 			var ctracker = new clm.tracker({useWebGL : true});
 			ctracker.init(pModel);
@@ -119,10 +117,10 @@
 			scene.add( tom );
 			tom.position.z = disBetTandJ;
 
-			var resetJerry = function(){
+			var resetPosition = function(){
 				jerry.position.z =-5;
 				jerry.position.x = (Math.random()-0.5)*20;
-				// console.log(cube.position.x);				
+						
 			}
 
 			var isCatched = function(){
@@ -141,7 +139,7 @@
 			var controls = new THREE.OrbitControls( camera );
 
 
-			resetJerry();
+			resetPosition();
 
     		
     		var faceDetection = function(){
@@ -155,13 +153,14 @@
 
 			var updateJerry = function(){
 				//jerry.position.z +=jerrySpeed;
+			}
 				socket.on('jerry', function(data){
 					//console.log('received jerry socket');
 					jerry.position.x=data.x;
 					jerry.position.y=data.y;
 					jerry.position.z=data.z;
 				});
-			}
+			
 
 			var updateTom = function(){
 
@@ -186,6 +185,10 @@
 				emitTom();
 			}
 
+			var updateCube0 = function(){
+				cube0.position.z=tom.position.z-100;
+			}
+
 			var setCamera = function(x,y,z){
 				camera.position.x=x;
 				camera.position.y=y;
@@ -194,12 +197,13 @@
 
 			var render = function () {
 
-				updateJerry();
+				//updateJerry();
 
 				if((tom.position.z-jerry.position.z)<cubeSize) {
 					isCatched();
 					//resetJerry();
 					nextTom();
+					updateCube0();
 				};
 				updateTom();
 				setCamera(tom.position.x,tom.position.y,tom.position.z);
