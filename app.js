@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var ejs = require('ejs');
+var portNumber = server.listen(process.env.PORT || 1234);
 
 app.set('views', __dirname); //????????????
 
@@ -11,7 +12,7 @@ app.set('view engine', 'html');
 
 app.use(express.static(__dirname + '/public'));
 
-server.listen(1234);
+server.listen(portNumber);
 
 //app.get('/', );
 
