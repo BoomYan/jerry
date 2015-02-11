@@ -19,7 +19,7 @@
 					else disBet=cubeSize;
 				console.log(disBet);
 				if(Math.abs(b.position.z-a.position.z)<=disBet){
-					if(Math.abs(b.position.x-a.position.x)<=disBet*1.5)
+					if(Math.abs(b.position.x-a.position.x)<=disBet*hitScale)
 					{
 						return true;
 					}
@@ -45,7 +45,7 @@
 
 			var updateDistanceRemained=function(){
 				var distanceRemained = Math.round(food.position.z-jerry.position.z);
-				document.getElementById('distanceRemained').innerHTML='Distance Remained: '+distanceRemained;
+				document.getElementById('distanceRemained').innerHTML='Distance Remained For Jerry: '+distanceRemained;
 			}
 
 			var updateJerrySpeed=function(){

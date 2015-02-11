@@ -10,10 +10,11 @@
 			var keyboard = new THREEx.KeyboardState();
 			var groundWidth = 20;
 			var wallShift = 0;
-			var targetDistance = 50;
+			var targetDistance = 100;
 			var distanceRemained = targetDistance;
 			var jerryMetaShift=5;
-			var tomMetaShift=4;
+			var tomMetaShift=3;
+			var hitScale=1.0;//when detecting catch
 
 			exports.cubeSize=cubeSize;
 			exports.disBetTandJ=disBetTandJ;
@@ -28,6 +29,7 @@
 			exports.distanceRemained=distanceRemained;
 			exports.jerryMetaShift=jerryMetaShift;
 			exports.tomMetaShift=tomMetaShift;
+			exports.hitScale=hitScale;
 
 			//SOCKET
 			var socket = io.connect('http://' + location.host);
