@@ -10,7 +10,7 @@
 	<body>
 	      <video id="videoSource" muted autoplay width="240px" height="200px"></video>
 	      <a id="Catch"></a>
-	      <a id="Count"></a>
+	      <a id="distanceRemained"></a>
 	      	</body>
 		<script src="js/vendor/three.min.js"></script>
 		<script src="js/vendor/THREEx.KeyboardState.js"></script>
@@ -21,17 +21,8 @@
 		<script src="/socket.io/socket.io.js"></script>
 
 		<script src="js/initScene.js"></script>
+		<script src="js/mechanic.js"></script>
 		<script>
-
-			//SOCKET
-			var socket = io.connect('http://' + location.host);
-
-
-			//CAMERA TRACKER
-			var ctracker = new clm.tracker({useWebGL : true});
-			ctracker.init(pModel);
-			var vid = document.getElementsByTagName('video')[0];
-			ctracker.start(vid);
 
 
 
@@ -39,30 +30,12 @@
 			camera.rotation.y=180 * Math.PI / 180;
 
 
-			var resetPosition = function(){
-				jerry.position.z =-5;
-				jerry.position.x = (Math.random()-0.5)*20;
-				// console.log(cube.position.x);				
-			}
 
-			var isCatched = function(){
-				if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
-					console.log("Catched!!!");
-					document.getElementById('Catch').innerHTML = 'Catched!!!'
-				}
-				
-				else{
-					console.log("No Catch!!!");
-				
-				document.getElementById('Catch').innerHTML = 'No Catch!'
-				}
-			}
+
 			//CONTROLS
 			// var controls = new THREE.OrbitControls( camera );
-
-
-			resetPosition();
-			
+			socket.emit('reset');
+		
 
 			//var keyboard = new THREEx.KeyboardState();
     		
@@ -74,9 +47,13 @@
 
 			var updateJerry = function(){
 
+				if (Math.abs(tom.position.z-jerry.position.z)>disBetTandJ){
+					jerry.position.z=tom.position.z-disBetTandJ-0.01;
+				}
+
+
 				faceDetection();
 				jerry.position.z +=jerrySpeed;
-				console.log(jerrySpeed);
 				if(aPos){
 					 shift= 5*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
@@ -102,14 +79,9 @@
 
 
 			var updateCube0 = function(){
-				cube0.position.z=jerry.position.z+100;
+				cube0.position.z=jerry.position.z+500;
 			}
 
-			var setCamera = function(x,y,z){
-				camera.position.x=x;
-				camera.position.y=y;
-				camera.position.z=z;
-			}
 
 			var render = function () {
 
@@ -123,6 +95,7 @@
 				};
 				updateTom();
 				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
+				distanceRemained();
 				// controls.update;
 				renderer.render(scene, camera);
 			};

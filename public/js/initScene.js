@@ -9,6 +9,7 @@
 			var keyboard = new THREEx.KeyboardState();
 			var groundWidth = 20;
 			var wallShift = 0;
+			var targetDistance = 200;
 
 			exports.cubeSize=cubeSize;
 			exports.disBetTandJ=disBetTandJ;
@@ -18,6 +19,19 @@
 			exports.keyboard=keyboard;
 			exports.groundWidth=groundWidth;
 			exports.wallShift=wallShift;
+			exports.targetDistance=targetDistance;
+
+
+			//SOCKET
+			var socket = io.connect('http://' + location.host);
+
+			//CAMERA TRACKER
+			var ctracker = new clm.tracker({useWebGL : true});
+			ctracker.init(pModel);
+			var vid = document.getElementsByTagName('video')[0];
+			ctracker.start(vid);
+
+
 
 
 			//SCENE
@@ -111,6 +125,16 @@
 			scene.add( tom );
 			tom.position.z = disBetTandJ;
 
+			//Cube3	- Food
+
+			var foodGeometry = new THREE.BoxGeometry( 10, 10, 10 );
+			var foodMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+			var food = new THREE.Mesh( foodGeometry, foodMaterial );
+			food.position.z=targetDistance;
+			scene.add( food );
+
+
+
 			//RENDERER
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -119,12 +143,14 @@
 			renderer.shadowMapCullFace = THREE.CullFaceBack;
 			document.body.appendChild( renderer.domElement );
 
-
+			exports.socket=socket;
+			exports.ctracker=ctracker;
 			exports.scene=scene;
 			exports.camera=camera;
 			exports.cube0=cube0;
 			exports.jerry=jerry;
 			exports.tom=tom;
+			exports.food=food;
 			exports.renderer=renderer;
 
 })(this);

@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 
 server.listen(portNumber);
 
-console.log(portNumber);
+// console.log(portNumber);
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/tom.html');
@@ -36,9 +36,13 @@ io.on('connection', function (socket) {
   });
 
   socket.on('jerry', function(data){
-  	console.log(socket.id);
+  	// console.log(socket.id);
   	socket.broadcast.emit('jerry', data);
   });
+
+  socket.on('reset',function(){
+    io.sockets.emit('resetAll');
+  })
 
 
   // socket.on('reset', function (data) {
