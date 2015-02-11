@@ -55,7 +55,7 @@
 				faceDetection();
 				jerry.position.z +=jerrySpeed;
 				if(aPos){
-					 shift= 5*(aPos[0]-120)/1200; //120~-120
+					 shift= 7*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				jerry.position.x +=shift;
@@ -70,11 +70,7 @@
 				// tom.position.x -=step;
 				// else tom.position.x+=step;
 			}
-				socket.on('tom', function(data){
-					tom.position.x=data.x;
-					tom.position.y=data.y;
-					tom.position.z=data.z;
-				});
+
 			
 
 
@@ -82,21 +78,53 @@
 				cube0.position.z=jerry.position.z+500;
 			}
 
+			socket.emit('reset');
+			
+			socket.on('tom', function(data){
+				tom.position.x=data.x;
+				tom.position.y=data.y;
+				tom.position.z=data.z;
+			});
+
+			socket.on('tomCatchedJerry',function(){
+					reset();
+					alert('You lose!! You have been catched!!');
+					
+
+			});			
+			socket.on('jerryGotTheFood',function(){
+					reset();
+						alert('Yay, you win!! You got the food!!');
+						
+
+			});
+			socket.on('jerryMissedTheFood',function(){
+				reset();
+						alert('You lose!! You missed the food!!');
+						
+			});
 
 			var render = function () {
 
 				updateJerry();
 
-				if(Math.abs(jerry.position.z-tom.position.z)<cubeSize) {
-					isCatched();
-					// resetJerry();
-					//nextTom();
-					updateCube0();
+				if(isHit(jerry,tom)){
+
+				}
+
+				if((food.position.z-jerry.position.z)<cubeSize*3) {
+					if(isHit(jerry,food)){
+
+					}
+					else{
+
+					}
 				};
+				
 				updateTom();
 				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
-				distanceRemained();
-				// controls.update;
+				updateDistanceRemained();
+				updateJerrySpeed();
 				renderer.render(scene, camera);
 			};
 

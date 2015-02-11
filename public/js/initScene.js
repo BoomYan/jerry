@@ -3,16 +3,19 @@
 			//UNIVERSAL VARIABLES
 			var cubeSize=1;
 			var disBetTandJ=10;
-			var jerrySpeed=0.1;//0.08
+			var normalSpeed=0.05;
+			var jerrySpeed=normalSpeed;//0.08
 			var aPos;
 			var shift=0;
 			var keyboard = new THREEx.KeyboardState();
 			var groundWidth = 20;
 			var wallShift = 0;
-			var targetDistance = 200;
+			var targetDistance = 50;
+			var distanceRemained = targetDistance;
 
 			exports.cubeSize=cubeSize;
 			exports.disBetTandJ=disBetTandJ;
+			exports.normalSpeed=normalSpeed;
 			exports.jerrySpeed=jerrySpeed;//0.08
 			exports.aPos=aPos;
 			exports.shift=shift;
@@ -20,6 +23,7 @@
 			exports.groundWidth=groundWidth;
 			exports.wallShift=wallShift;
 			exports.targetDistance=targetDistance;
+			exports.distanceRemained=distanceRemained;
 
 
 			//SOCKET
@@ -127,7 +131,7 @@
 
 			//Cube3	- Food
 
-			var foodGeometry = new THREE.BoxGeometry( 10, 10, 10 );
+			var foodGeometry = new THREE.BoxGeometry( cubeSize*5, cubeSize*5, cubeSize*5 );
 			var foodMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
 			var food = new THREE.Mesh( foodGeometry, foodMaterial );
 			food.position.z=targetDistance;
