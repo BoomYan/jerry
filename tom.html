@@ -21,16 +21,9 @@
 		<script src="js/vendor/OrbitControls.js"></script>
 
 		<script src="/socket.io/socket.io.js"></script>
-
+		<script src="js/initScene.js"></script>
 		<script>
 
-			//UNIVERSAL VARIABLES
-			var cubeSize=1;
-			var disBetTandJ=10;
-			var jerrySpeed=0;//0.08
-			var aPos;
-			var shift=0;
-			var keyboard = new THREEx.KeyboardState();
 
 
 			//SOCKET
@@ -42,86 +35,19 @@
 			var vid = document.getElementsByTagName('video')[0];
 			ctracker.start(vid);
 
-			//CAMERA
-
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-			camera.rotation.y=180 * Math.PI / 180;
-
-			//SCENE
-			var scene = new THREE.Scene();
-//			scene.fog = new THREE.Fog( 0xffffff, 1000, 10000 );//////////////////
-
-			scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
-			scene.fog.color.setHSL( 0.6, 0, 1 );
-
-			// LIGHTS
-
-			hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-			hemiLight.color.setHSL( 0.6, 1, 0.6 );
-			hemiLight.color.setHSL( 0.6, 1, 0.95 );
-
-			hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-			hemiLight.position.set( 0, 500, 0 );
-			scene.add( hemiLight );
-
-			var light = new THREE.PointLight( 0xffffff, 1, 100 );
-			light.position.set( 0, 0, 10 );
-			light.color.setHSL( 0.1, 1, 0.95 );
-
-			light.shadowDarkness =0.35;
-			scene.add( light );
 
 
-			// GROUND
-			var groundGeo = new THREE.PlaneBufferGeometry( 10000, 10000 );
-			var groundMat = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
-			groundMat.color.setHSL( 0.095, 1, 0.75 );
-			var ground = new THREE.Mesh( groundGeo, groundMat );
-			ground.rotation.x = -Math.PI/2;
-			ground.position.y = -3;
-			scene.add( ground );
 
-			ground.receiveShadow = true;
 
-			//RENDERER
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.shadowMapEnabled = true;
-			renderer.shadowMapType = THREE.PCFSoftShadowMap;
-			renderer.shadowMapCullFace = THREE.CullFaceBack;
-			document.body.appendChild( renderer.domElement );
 
-			//Cube0
-
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube0 = new THREE.Mesh( geometry, material );
-			scene.add( cube0 );
-			cube0.position.z=-100;
-			//Cube1 - Jerry
-
-			var geometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var jerry = new THREE.Mesh( geometry, material );
-			jerry.castShadow = true;
-			jerry.receiveShadow = false;
-			scene.add( jerry );
-
-			//Cube2 - Tom
-
-			var geometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize);
-			var material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
-			var tom = new THREE.Mesh( geometry, material );
-			tom.castShadow = true;
-			tom.receiveShadow = false;
-			scene.add( tom );
-			tom.position.z = disBetTandJ;
 
 			var resetPosition = function(){
 				jerry.position.z =-5;
-				jerry.position.x = (Math.random()-0.5)*20;
+				jerry.position.x = (Math.random()-0.5)*groundWidth;
 						
 			}
+
+			resetPosition();
 
 			var isCatched = function(){
 				if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
@@ -137,9 +63,8 @@
 			}
 			//CONTROLS
 			var controls = new THREE.OrbitControls( camera );
+			// controls.addEventListener( 'change', render );
 
-
-			resetPosition();
 
     		
     		var faceDetection = function(){
@@ -152,27 +77,32 @@
 			}
 
 			var updateJerry = function(){
-				//jerry.position.z +=jerrySpeed;
+				// jerry.position.z +=jerrySpeed;
 			}
-				socket.on('jerry', function(data){
+			socket.on('jerry', function(data){
 					//console.log('received jerry socket');
-					jerry.position.x=data.x;
-					jerry.position.y=data.y;
-					jerry.position.z=data.z;
-				});
+				jerry.position.x=data.x;
+				jerry.position.y=data.y;
+				jerry.position.z=data.z;
+			});
 			
 
 			var updateTom = function(){
 
 				 // if(keyboard.pressed("left")) tom.position.x -= 0.05;
 				 // if(keyboard.pressed("right")) tom.position.x += 0.05;
+
+				if (Math.abs(tom.position.z-jerry.position.z)>disBetTandJ){
+					tom.position.z=jerry.position.z+disBetTandJ-1;
+				}
 				faceDetection();
 				if(aPos){
 					 shift= 5*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				tom.position.x -=shift;
-
+				tom.position.x = Math.max(tom.position.x,-groundWidth/2);
+				tom.position.x = Math.min(tom.position.x,groundWidth/2);
 				emitTom();
 
 			}
@@ -207,7 +137,7 @@
 				};
 				updateTom();
 				setCamera(tom.position.x,tom.position.y,tom.position.z);
-				// controls.update;
+				controls.update;
 				renderer.render(scene, camera);
 			};
 
