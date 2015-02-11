@@ -43,18 +43,18 @@ io.on('connection', function (socket) {
   socket.on('reset',function(){
     io.sockets.emit('resetAll');
   })
-      socket.on('tomCatchedJerry',function(){
+  socket.on('tomCatchedJerry',function(){
     io.sockets.emit('tomCatchedJerry');
 
-      });     
-      socket.on('jerryGotTheFood',function(){
+  });     
+  socket.on('jerryGotTheFood',function(){
     io.sockets.emit('jerryGotTheFood');
 
-      });
-      socket.on('jerryMissedTheFood',function(){
-     io.sockets.emit('jerryMissedTheFood');
+  });
+  socket.on('jerryMissedTheFood',function(){
+    io.sockets.emit('jerryMissedTheFood');
 
-      });
+  });
 
   // socket.on('reset', function (data) {
   //   // console.log(socket.id);

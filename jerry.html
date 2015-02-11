@@ -55,7 +55,7 @@
 				faceDetection();
 				jerry.position.z +=jerrySpeed;
 				if(aPos){
-					 shift= 7*(aPos[0]-120)/1200; //120~-120
+					 shift= jerryMetaShift*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				jerry.position.x +=shift;
@@ -108,18 +108,18 @@
 
 				updateJerry();
 
-				if(isHit(jerry,tom)){
+				// if(isHit(jerry,tom)){
 
-				}
+				// }
 
-				if((food.position.z-jerry.position.z)<cubeSize*3) {
-					if(isHit(jerry,food)){
+				// if((food.position.z-jerry.position.z)<cubeSize*3) {
+				// 	if(isHit(jerry,food)){
 
-					}
-					else{
+				// 	}
+				// 	else{
 
-					}
-				};
+				// 	}
+				// };
 				
 				updateTom();
 				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);

@@ -69,7 +69,7 @@
 
 				faceDetection();
 				if(aPos){
-					 shift= 5*(aPos[0]-120)/1200; //120~-120
+					 shift= tomMetaShift*(aPos[0]-120)/1200; //120~-120
 					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
 				}
 				tom.position.x -=shift;
@@ -88,7 +88,7 @@
 			}
 
 			socket.emit('reset');
-			
+
 			socket.on('jerry', function(data){
 					//console.log('received jerry socket');
 				jerry.position.x=data.x;
@@ -128,18 +128,20 @@
 
 
 					socket.emit('tomCatchedJerry');
-
+					return;
 					// reset();
 				}
 
 				if((food.position.z-jerry.position.z)<cubeSize*3) {
 					if(isHit(jerry,food)){
 						socket.emit('jerryGotTheFood');
+						return;
 						// reset();
 					}
 					else{
 
-						socket.emit('jerryMissedTheFood');	
+						socket.emit('jerryMissedTheFood');
+						return;	
 						// reset();
 					}
 				};

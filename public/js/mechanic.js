@@ -15,7 +15,7 @@
 
 			var isHit = function(a,b){
 				var disBet;
-				if(b == food)disBet=cubeSize*3;
+				if(b == food)disBet=cubeSize*5;
 					else disBet=cubeSize;
 				console.log(disBet);
 				if(Math.abs(b.position.z-a.position.z)<=disBet){
@@ -29,18 +29,18 @@
 			}
 
 
-			var isCatched = function(){
-				if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
-					console.log("Catched!!!");
-					document.getElementById('Catch').innerHTML = 'Catched!!!'
-				}
+			// var isCatched = function(){
+			// 	if(Math.abs(tom.position.x-jerry.position.x)<=cubeSize*1.5){
+			// 		console.log("Catched!!!");
+			// 		document.getElementById('Catch').innerHTML = 'Catched!!!'
+			// 	}
 				
-				else{
-					console.log("No Catch!!!");
+			// 	else{
+			// 		console.log("No Catch!!!");
 				
-				document.getElementById('Catch').innerHTML = 'No Catch!'
-				}
-			}
+			// 	document.getElementById('Catch').innerHTML = 'No Catch!'
+			// 	}
+			// }
 
 
 			var updateDistanceRemained=function(){
@@ -56,6 +56,8 @@
 
 			var reset = function(){
 				//socket.emit('reset');
+				console.log('reset');
+				location.reload(true);
 				jerry.position.x = (Math.random()-0.5)*groundWidth;
 				jerry.position.z =-5;
 				tom.position.x = 0;
@@ -73,7 +75,7 @@
 
 			exports.nextTom=nextTom;
 			exports.setCamera=setCamera;
-			exports.isCatched=isCatched;
+			// exports.isCatched=isCatched;
 			exports.updateDistanceRemained=updateDistanceRemained;
 			exports.isHit=isHit;
 			exports.updateJerrySpeed=updateJerrySpeed;

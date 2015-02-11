@@ -6,12 +6,14 @@
 			var normalSpeed=0.05;
 			var jerrySpeed=normalSpeed;//0.08
 			var aPos;
-			var shift=0;
+			var shift=0;//for tom and jerry to shift
 			var keyboard = new THREEx.KeyboardState();
 			var groundWidth = 20;
 			var wallShift = 0;
 			var targetDistance = 50;
 			var distanceRemained = targetDistance;
+			var jerryMetaShift=5;
+			var tomMetaShift=4;
 
 			exports.cubeSize=cubeSize;
 			exports.disBetTandJ=disBetTandJ;
@@ -24,7 +26,8 @@
 			exports.wallShift=wallShift;
 			exports.targetDistance=targetDistance;
 			exports.distanceRemained=distanceRemained;
-
+			exports.jerryMetaShift=jerryMetaShift;
+			exports.tomMetaShift=tomMetaShift;
 
 			//SOCKET
 			var socket = io.connect('http://' + location.host);
