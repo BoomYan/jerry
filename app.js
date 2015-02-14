@@ -17,7 +17,7 @@ server.listen(portNumber);
 // console.log(portNumber);
 
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/tom.html');
+  res.sendFile(__dirname + '/home.html');
 });
 
 app.get('/tom', function (req, res) {
