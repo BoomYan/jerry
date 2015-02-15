@@ -1,0 +1,42 @@
+body {
+	margin: 0; 
+	font-family: "Lucida Console";
+}
+canvas { 
+	width: 100%; 
+	height: 100%;
+	/*display: none;*/ 
+}
+a {font-size: 80px;color:blue;}
+#videoSource{
+	display: none;
+
+	transform: rotateY(180deg);
+	-webkit-transform:rotateY(180deg); /* Safari and Chrome */
+	-moz-transform:rotateY(180deg); /* Firefox */
+}
+
+#distanceRemained{
+	position: absolute;
+	top: 0%;
+	color:white;
+	font-size: 50px;
+}
+
+#result{
+	position: absolute;
+	width: 1000px;
+	height: 400px;
+	left: 50%;
+	top: 50%;
+	margin-left: -500px;
+	margin-top: -200px;
+	text-align: center;
+	display: none;
+	z-index: 2;
+}
+
+#resultResult{
+	font-size: 30px;
+	color: red;
+}

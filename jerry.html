@@ -1,150 +1,108 @@
 <html>
-	<head>
-		<title>Jerry</title>
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-			a {font-size: 80px;color:blue;}
-			#videoSource{
-				display: none;
+<head>
+	<title>Jerry</title>
+	<link rel             = "stylesheet" type="text/css" href="css/style.css"/>
+</head>
+<body>
+	<video id             = "videoSource" muted autoplay width="240px" height="200px"></video>
+	<a id                 = "Catch"></a>
+	<a id                 = "distanceRemained"></a>
+	<!-- 	<canvas id      = "myCanvas"></canvas> -->
 
-    			transform: rotateY(180deg);
-    			-webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    			-moz-transform:rotateY(180deg); /* Firefox */
-			}
-			
-		</style>
-	</head>
-	<body>
-	      <video id="videoSource" muted autoplay width="240px" height="200px"></video>
-	      <a id="Catch"></a>
-	      <a id="distanceRemained"></a>
-	      	</body>
-		<script src="js/vendor/three.min.js"></script>
-		<script src="js/vendor/THREEx.KeyboardState.js"></script>
-		<script src="js/vendor/clmtrackr.js"></script>
-		<script src="js/vendor/camera.js"></script>		
-		<script src="js/vendor/model_pca_20_svm.js"></script>
-		<script src="js/vendor/OrbitControls.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
+	<div id               = "result">
+		<p id                = "resultResult">ooops</p>
+		<button class        = "bu" id="anotherRound">Another Round</button>
+	</div>
+</body>
+<script src            = "js/vendor/three.min.js"></script>
+<script src            = "js/vendor/THREEx.KeyboardState.js"></script>
+<script src            = "js/vendor/clmtrackr.js"></script>
 
-		<script src="js/initScene.js"></script>
-		<script src="js/mechanic.js"></script>
-		<script>
+<script src            = "js/vendor/camera.js"></script>	
+<script src            = "js/vendor/model_pca_20_svm.js"></script>
+<script src            = "js/vendor/OrbitControls.js"></script>
+<script src            = "/socket.io/socket.io.js"></script>
+
+<script src            = "js/initScene.js"></script>
+<script src            = "js/mechanic.js"></script>
+<script src            = "js/socket.js"></script>
+<script>
 
 
 
-			//CAMERA
-			camera.rotation.y=180 * Math.PI / 180;
+//CAMERA
+camera.rotation.y      = 180 * Math.PI / 180;
 
 
 
 
-			//CONTROLS
-			// var controls = new THREE.OrbitControls( camera );
-			socket.emit('reset');
+//CONTROLS
+// var controls        = new THREE.OrbitControls( camera );
+socket.emit('reset');
 		
 
-			//var keyboard = new THREEx.KeyboardState();
+//var keyboard         = new THREEx.KeyboardState();
     		
 
-    		var faceDetection = function(){
-    			var positions = ctracker.getCurrentPosition();
-    			aPos=positions[33];
-    		}
-
-			var updateJerry = function(){
-
-				if (Math.abs(tom.position.z-jerry.position.z)>disBetTandJ){
-					jerry.position.z=tom.position.z-disBetTandJ-0.01;
-				}
+var faceDetection      = function(){
+	var positions         = ctracker.getCurrentPosition();
+	aPos                  = positions[33];
+}
 
 
-				faceDetection();
-				jerry.position.z +=jerrySpeed;
-				if(aPos){
-					 shift= jerryMetaShift*(aPos[0]-120)/1200; //120~-120
-					// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
-				}
-				jerry.position.x +=shift;
-				jerry.position.x = Math.max(jerry.position.x,-groundWidth/2);
-				jerry.position.x = Math.min(jerry.position.x,groundWidth/2);
-				socket.emit('jerry', {'x': jerry.position.x, 'y': jerry.position.y, 'z': jerry.position.z});
-			}
+socket.on('tom', function(data){
+	//console.log('received jerry socket');
+	tom.position.x      = data.x;
+	tom.position.y      = data.y;
+	tom.position.z      = data.z;
+});
 
-			var updateTom = function(){
-				// var step=0.3
-				// if(tom.position.x>jerry.position.x)
-				// tom.position.x -=step;
-				// else tom.position.x+=step;
-			}
+var updateJerry        = function(){
 
-			
+	if (Math.abs(tom.position.z-jerry.position.z)>disBetTandJ){
+		jerry.position.z     = tom.position.z-disBetTandJ-0.01;
+	}
 
 
-			var updateCube0 = function(){
-				cube0.position.z=jerry.position.z+500;
-			}
+	faceDetection();
+	jerry.position.z +=jerrySpeed;
+	if(aPos){
+		shift                = jerryMetaShift*(aPos[0]-120)/1200; //120~-120
+		// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
+	}
+	jerry.position.x +=shift;
+	jerry.position.x      = Math.max(jerry.position.x,-groundWidth/2);
+	jerry.position.x      = Math.min(jerry.position.x,groundWidth/2);
+	socket.emit('jerry', {'x': jerry.position.x, 'y': jerry.position.y, 'z': jerry.position.z});
+}
 
-			socket.emit('reset');
-			
-			socket.on('tom', function(data){
-				tom.position.x=data.x;
-				tom.position.y=data.y;
-				tom.position.z=data.z;
-			});
+var updateTom          = function(){
+	// var step           = 0.3
+	// if(tom.position.x>jerry.position.x)
+	// tom.position.x -=step;
+	// else tom.position.x+=step;
+}
 
-			socket.on('tomCatchedJerry',function(){
-					reset();
-					alert('You lose!! You have been catched!!');
-					
 
-			});			
-			socket.on('jerryGotTheFood',function(){
-					reset();
-						alert('Yay, you win!! You got the food!!');
-						
+var render             = function () {
+	result();	
+	updateJerry();
+	updateTom();
+	setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
+	updateDistanceRemained();
+	updateJerrySpeed();
+	renderer.render(scene, camera);
+};
 
-			});
-			socket.on('jerryMissedTheFood',function(){
-				reset();
-						alert('You lose!! You missed the food!!');
-						
-			});
+function animate() {
 
-			var render = function () {
+	requestAnimationFrame( animate );
 
-				updateJerry();
+	render();
 
-				// if(isHit(jerry,tom)){
-
-				// }
-
-				// if((food.position.z-jerry.position.z)<cubeSize*3) {
-				// 	if(isHit(jerry,food)){
-
-				// 	}
-				// 	else{
-
-				// 	}
-				// };
-				
-				updateTom();
-				setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
-				updateDistanceRemained();
-				updateJerrySpeed();
-				renderer.render(scene, camera);
-			};
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				render();
-
-			}
-			animate();
-		</script>
+}
+animate();
+</script>
 
 </html>
 
