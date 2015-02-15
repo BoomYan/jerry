@@ -17,7 +17,9 @@
 	var tomMetaShift           = 3;
 	var hitScale               = 1.0;//when detecting catch
 	var role                   = document.location.pathname.slice(1);
-	var gameStop			   = false;
+	var gameStop			   = true;
+	var tomReady			   = false;
+    var jerryReady			   = false;
 
 	exports.cubeSize           = cubeSize;
 	exports.disBetTandJ        = disBetTandJ;
@@ -36,6 +38,8 @@
 	exports.hitScale           = hitScale;
 	exports.role = role;
 	exports.gameStop		   = gameStop;
+	exports.tomReady		   = tomReady;
+	exports.jerryReady		   = jerryReady;
 
 	//SOCKET
 	var socket                 = io.connect('http://' + location.host);

@@ -4,6 +4,8 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var ejs = require('ejs');
 var portNumber = process.env.PORT || 1234;
+var tomReady = false;
+var jerryReady = false;
 
 app.set('views', __dirname); //????????????
 
@@ -30,16 +32,6 @@ app.get('/jerry', function (req, res) {
 //event listener 
 io.on('connection', function (socket) {
 
-  socket.on('tom', function (data) {
-    // console.log(socket.id);
-    socket.broadcast.emit('tom', data);
-  });
-
-  socket.on('jerry', function(data){
-  	// console.log(socket.id);
-  	socket.broadcast.emit('jerry', data);
-  });
-
   socket.on('position',function(data){
     socket.broadcast.emit('position',data);
   });
@@ -49,23 +41,25 @@ io.on('connection', function (socket) {
   })
   socket.on('tomCatchedJerry',function(){
     io.sockets.emit('tomCatchedJerry');
-
   });     
   socket.on('jerryGotTheFood',function(){
     io.sockets.emit('jerryGotTheFood');
-
   });
   socket.on('jerryMissedTheFood',function(){
     io.sockets.emit('jerryMissedTheFood');
-
   });
-
-  // socket.on('reset', function (data) {
-  //   // console.log(socket.id);
-  //   data = {'x': 0, 'y': 0, 'z': 10}
-  //   socket.broadcast.emit('tom', data);
-  //   data = {'x': 0, 'y': 0, 'z': -5}
-  //   socket.broadcast.emit('jerry', data); 
-  // });
+  socket.on('ready',function(data){
+    if (data.role == 'tom'){
+      tomReady                                             = true;
+    }
+    else{
+      jerryReady                                           = true;
+    }
+    if(tomReady && jerryReady){
+      tomReady                                              = false;
+      jerryReady                                            = false;
+      io.sockets.emit('startGame',data);
+    }
+  });    
 
 });

@@ -9,8 +9,12 @@
 	<a id                 = "distanceRemained"></a>
 	<!-- 	<canvas id      = "myCanvas"></canvas> -->
 	<div id               = "result">
-		<p id                = "resultResult">ooops</p>
-		<button class        = "bu" id="anotherRound">Another Round</button>
+		<p id                = "resultMSG">ooops</p>
+		<button id           = "anotherRound">Another Round</button>
+	</div>
+	<div id               = "waitForReady">
+		<p id                = "readyMSG">ooops</p>
+		<button id           = "iAmReady">I Am Ready!</button>
 	</div>
 </body>
 <script src            = "js/vendor/three.min.js"></script>
@@ -25,6 +29,8 @@
 <script src            = "js/initScene.js"></script>
 <script src            = "js/mechanic.js"></script>
 <script src            = "js/socket.js"></script>
+<script src            = "js/result.js"></script>
+<script src            = "js/game.js"></script>
 <script>
 
 
@@ -60,7 +66,8 @@ var updateTom          = function(){
 
 }
 
-socket.emit('reset');
+// socket.emit('reset');
+waitForReady();
 
 var render             = function () {
 

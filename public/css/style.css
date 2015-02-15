@@ -18,7 +18,7 @@ a {font-size: 80px;color:blue;}
 
 #distanceRemained{
 	position: absolute;
-	top: 0%;
+	top: 1%;
 	color:white;
 	font-size: 50px;
 }
@@ -28,7 +28,7 @@ a {font-size: 80px;color:blue;}
 	width: 1000px;
 	height: 400px;
 	left: 50%;
-	top: 50%;
+	top: 60%;
 	margin-left: -500px;
 	margin-top: -200px;
 	text-align: center;
@@ -36,7 +36,27 @@ a {font-size: 80px;color:blue;}
 	z-index: 2;
 }
 
-#resultResult{
+#resultMSG{
 	font-size: 30px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+}
+
+#waitForReady{
+	position: absolute;
+	width: 1000px;
+	height: 400px;
+	left: 50%;
+	top: 60%;
+	margin-left: -500px;
+	margin-top: -200px;
+	text-align: center;
+	display: none;
+	z-index: 2;
+}
+
+#readyMSG{
+	font-size: 30px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
 	color: white;
 }
