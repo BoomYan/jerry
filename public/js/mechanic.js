@@ -1,7 +1,6 @@
 (function (exports){
 	var nextTom                                            = function(){
-		tom.position.z                                        = jerry.position.z+disBetTandJ;
-		emitTom();
+		tom.position.z                                        = tom.position.z+disBetTandJ;
 	}
 
 
@@ -28,7 +27,7 @@
 
 
 	var updateDistanceRemained                             = function(){
-		var distanceRemained                                  = Math.round(food.position.z-jerry.position.z);
+		var distanceRemained                                  = Math.round(food.position.z-jerry.position.z-3*cubeSize);
 		document.getElementById('distanceRemained').innerHTML = 'Distance Remained For Jerry: '+distanceRemained;
 	}
 
@@ -47,13 +46,20 @@
 		jerry.position.z                                      = -5;
 		tom.position.x                                        = 0;
 		tom.position.z                                        = disBetTandJ;
-		document.getElementById("result").style.display       = "none";
+		startGame();
+
 	}
 
-
+	var startGame										    = function(){
+		document.getElementById("result").style.display       = "none";
+		normalSpeed											  = metaNormalSpeed;
+		gameStop											  = false;
+	}
 
 	var stopGame                                           = function(){
+		gameStop											  = true;
 		jerrySpeed                                            = 0;
+		normalSpeed											  = 0;
 		document.getElementById("result").style.display       = "block";
 	}
 

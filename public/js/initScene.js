@@ -3,6 +3,7 @@
 	//UNIVERSAL VARIABLES
 	var cubeSize               = 1;
 	var disBetTandJ            = 10;
+	var metaNormalSpeed		   = 0.05;
 	var normalSpeed            = 0.05;
 	var jerrySpeed             = normalSpeed;//0.08
 	var aPos;
@@ -16,9 +17,11 @@
 	var tomMetaShift           = 3;
 	var hitScale               = 1.0;//when detecting catch
 	var role                   = document.location.pathname.slice(1);
+	var gameStop			   = false;
 
 	exports.cubeSize           = cubeSize;
 	exports.disBetTandJ        = disBetTandJ;
+	exports.metaNormalSpeed	   = metaNormalSpeed;
 	exports.normalSpeed        = normalSpeed;
 	exports.jerrySpeed         = jerrySpeed;//0.08
 	exports.aPos               = aPos;
@@ -32,6 +35,7 @@
 	exports.tomMetaShift       = tomMetaShift;
 	exports.hitScale           = hitScale;
 	exports.role = role;
+	exports.gameStop		   = gameStop;
 
 	//SOCKET
 	var socket                 = io.connect('http://' + location.host);
@@ -42,6 +46,10 @@
 	var vid                    = document.getElementsByTagName('video')[0];
 	ctracker.start(vid);
 
+	var faceDetection      = function(){
+		var positions         = ctracker.getCurrentPosition();
+		exports.aPos                  = positions[33];
+	}
 
 
 
@@ -154,6 +162,7 @@
 	exports.tom                = tom;
 	exports.food               = food;
 	exports.renderer           = renderer;
+	exports.faceDetection           = faceDetection;
 
 })(this);
 

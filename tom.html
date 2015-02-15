@@ -34,14 +34,8 @@ var controls           = new THREE.OrbitControls( camera );
 
 
 
-var faceDetection      = function(){
-	var positions         = ctracker.getCurrentPosition();
-	aPos                  = positions[33];
-}
 
-var emitTom            = function(){
-	socket.emit('tom', {'x': tom.position.x, 'y': tom.position.y, 'z': tom.position.z});				
-}
+
 
 var updateJerry        = function(){
 	// jerry.position.z +=jerrySpeed;
@@ -66,34 +60,20 @@ var updateTom          = function(){
 
 }
 
-
-
-
-
-
-
 socket.emit('reset');
-
-socket.on('jerry', function(data){
-	//console.log('received jerry socket');
-	jerry.position.x      = data.x;
-	jerry.position.y      = data.y;
-	jerry.position.z      = data.z;
-});
-
-
 
 var render             = function () {
 
-	//updateJerry();
+	if (gameStop) return;
+
 	result();
-	if(((tom.position.z-jerry.position.z)<cubeSize)&& !isHit(jerry,tom) && !isHit(jerry,food)) {
+	if(((tom.position.z-jerry.position.z)<cubeSize)&& (!isHit(jerry,tom)) && (!isHit(jerry,food)))  {
 		console.log('nextTom invoked');
 		nextTom();
 	};				
-
 	updateTom();
-	emitTom();
+	// updateJerry();
+	emitPosition(tom);
 	setCamera(tom.position.x,tom.position.y,tom.position.z);
 	updateDistanceRemained();
 	updateJerrySpeed();

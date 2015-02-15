@@ -40,6 +40,10 @@ io.on('connection', function (socket) {
   	socket.broadcast.emit('jerry', data);
   });
 
+  socket.on('position',function(data){
+    socket.broadcast.emit('position',data);
+  });
+
   socket.on('reset',function(){
     io.sockets.emit('resetAll');
   })
