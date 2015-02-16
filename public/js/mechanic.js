@@ -3,11 +3,25 @@
 		tom.position.z                                        = tom.position.z+disBetTandJ;
 	}
 
+	var toggleFPV                                          = function(){
+		if(keyboard.pressed("space")){
+			fpv                                                  = !fpv;
+			console.log("toggleFPV is invoked");
+		}
+	}
 
 	var setCamera                                          = function(x,y,z){
+
+		setInterval(toggleFPV,1000);
 		camera.position.x                                     = x;
+		if(!fpv){
+			if(role=="tom")	z=z+2;
+			else z                                               = z-2;
+			y                                                    = y+2;
+		}
 		camera.position.y                                     = y;
 		camera.position.z                                     = z;
+	
 	}
 
 

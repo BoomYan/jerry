@@ -20,6 +20,7 @@
 	var gameStop			   = true;
 	var tomReady			   = false;
     var jerryReady			   = false;
+    var fpv					   = true;
 
 	exports.cubeSize           = cubeSize;
 	exports.disBetTandJ        = disBetTandJ;
@@ -40,6 +41,7 @@
 	exports.gameStop		   = gameStop;
 	exports.tomReady		   = tomReady;
 	exports.jerryReady		   = jerryReady;
+	exports.fpv				   = fpv;
 
 	//SOCKET
 	var socket                 = io.connect('http://' + location.host);
