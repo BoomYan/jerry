@@ -1,6 +1,6 @@
 JerryRun
 ====
-A 3d FPV Cammera-Control Multiplayer Minimalist Game
+A 3D Cammera-Control Multiplayer Game
 
 Current Stage: **Prototyping**
 

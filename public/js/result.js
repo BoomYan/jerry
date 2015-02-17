@@ -32,16 +32,11 @@
 			return;
 		}
 
-		if((food.position.z-jerry.position.z)<cubeSize*3) {
-			if(isHit(jerry,food)){
-				jerryGotTheFood();
-				return;
-			}
-			else{
-				jerryMissedTheFood();
-				return;	
-			}
-		};
+		if((food.position.z-jerry.position.z)<cubeSize*3&&isHit(jerry,food)){
+			jerryGotTheFood();
+			return;
+		}
+		if((jerry.position.z-food.position.z)>=2*cubeSize) jerryMissedTheFood();
 	}
 	exports.result                                   = result;
 })(this);

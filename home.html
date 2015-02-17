@@ -2,17 +2,41 @@
 body{
 	font-size: 25px;
 	font-family: "Comic Sans MS", cursive, sans-serif
+
+}
+#detailedInstruction{
+	display:none;
+}
+.smallFont{
+	font-size: 20px;
+
 }
 </style>
-Instruction:
+<body>
+	Instruction:
+	<br></br>
+	Control: It's amazingly simple! Just "MOVE YOUR HEAD" left and right!
+	<a class                                                              = "smallFont" href="javascript:showDetailedInstruction();">More.</a>
+	<span id                                                              = "detailedInstruction">
+	</br>
+	"SPACE": &nbsp Toggle First Person View.
+</br>
+"LEFT ARROW KEY" and "RIGHT ARROW KEY": In case the camera doesn't work.
+</span>
 <br></br>
-Control: Move your head left(<-) and right(->)!
+<a href                                                                = "http://jerryrun.herokuapp.com/jerry">Play as Jerry:</a> Avoid <font color="blue">Tom(the blue cube)</font>, and catch the <font color="red">food(the red cube)</font>!!
 <br></br>
-<a href="http://jerryrun.herokuapp.com/jerry">Play as Jerry:</a> Avoid <font color="blue">Tom(the blue cube)</font>, and catch the <font color="red">food(the red cube)</font>!!
+<a href                                                                = "http://jerryrun.herokuapp.com/tom">Play as Tom:</a> Catch <font color="green">Jerry(the green cube)</font>, before he gets the <font color="red">food(the red cube)</font>!!
 <br></br>
-<a href="http://jerryrun.herokuapp.com/tom">Play as Tom:</a> Catch <font color="green">Jerry(the green cube)</font>, before he gets the <font color="red">food(the red cube)</font>!!
+Prototyping! Any suggestions are more than welcomed! Email me: <a href = "mailto:jiamingyan@nyu.com">jiamingyan@nyu.com</a>
 <br></br>
-Prototyping. Any suggestions are more than welcomed! Email me: <a href="mailto:jiamingyan@nyu.com">jiamingyan@nyu.com</a>
-<br></br>
-Good luck!
-
+Have Fun!
+</body>
+<script>
+var show                                                               = true;
+var showDetailedInstruction                                            = function(){
+if (show)document.getElementById('detailedInstruction').style.display  = 'block';
+else document.getElementById('detailedInstruction').style.display      = 'none';
+show                                                                   = !show;
+}
+</script>

@@ -3,7 +3,7 @@
 	//UNIVERSAL VARIABLES
 	var cubeSize               = 1;
 	var disBetTandJ            = 10;
-	var metaNormalSpeed		   = 0.05;
+	var metaNormalSpeed        = 0.05;
 	var normalSpeed            = 0.05;
 	var jerrySpeed             = normalSpeed;//0.08
 	var aPos;
@@ -14,17 +14,17 @@
 	var targetDistance         = 100;
 	var distanceRemained       = targetDistance;
 	var jerryMetaShift         = 5;
-	var tomMetaShift           = 3;
+	var tomMetaShift           = 2;
 	var hitScale               = 1.0;//when detecting catch
 	var role                   = document.location.pathname.slice(1);
-	var gameStop			   = true;
-	var tomReady			   = false;
-    var jerryReady			   = false;
-    var fpv					   = true;
+	var gameStop               = true;
+	var tomReady               = false;
+	var jerryReady             = false;
+	var fpv                    = false;
 
 	exports.cubeSize           = cubeSize;
 	exports.disBetTandJ        = disBetTandJ;
-	exports.metaNormalSpeed	   = metaNormalSpeed;
+	exports.metaNormalSpeed    = metaNormalSpeed;
 	exports.normalSpeed        = normalSpeed;
 	exports.jerrySpeed         = jerrySpeed;//0.08
 	exports.aPos               = aPos;
@@ -37,11 +37,11 @@
 	exports.jerryMetaShift     = jerryMetaShift;
 	exports.tomMetaShift       = tomMetaShift;
 	exports.hitScale           = hitScale;
-	exports.role = role;
-	exports.gameStop		   = gameStop;
-	exports.tomReady		   = tomReady;
-	exports.jerryReady		   = jerryReady;
-	exports.fpv				   = fpv;
+	exports.role               = role;
+	exports.gameStop           = gameStop;
+	exports.tomReady           = tomReady;
+	exports.jerryReady         = jerryReady;
+	exports.fpv                = fpv;
 
 	//SOCKET
 	var socket                 = io.connect('http://' + location.host);
@@ -52,10 +52,11 @@
 	var vid                    = document.getElementsByTagName('video')[0];
 	ctracker.start(vid);
 
-	var faceDetection      = function(){
-		var positions         = ctracker.getCurrentPosition();
-		exports.aPos                  = positions[33];
+	var faceDetection          = function(){
+		var positions             = ctracker.getCurrentPosition();
+		exports.aPos              = positions[33];
 	}
+
 
 
 
@@ -79,6 +80,16 @@
 	//CAMERA
 
 	var camera                 = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+	if (role == "jerry"){
+		camera.rotation.y         = 180 * Math.PI / 180;
+	}
+
+
+	//CONTROLS
+	// var controls            = new THREE.OrbitControls( camera );
+	// controls.addEventListener( 'change', render );
+
 
 
 	// GROUND
@@ -168,7 +179,7 @@
 	exports.tom                = tom;
 	exports.food               = food;
 	exports.renderer           = renderer;
-	exports.faceDetection           = faceDetection;
+	exports.faceDetection      = faceDetection;
 
 })(this);
 

@@ -1,100 +1,52 @@
 <html>
 <head>
 	<title>Tom</title>
-	<link rel             = "stylesheet" type="text/css" href="css/style.css"/>
+	<link rel       = "stylesheet" type="text/css" href="css/style.css"/>
 </head>
 <body>
-	<video id             = "videoSource" muted autoplay width="240px" height="200px"></video>
-	<a id                 = "Catch"></a>
-	<a id                 = "distanceRemained"></a>
-	<!-- 	<canvas id      = "myCanvas"></canvas> -->
-	<div id               = "result">
-		<p id                = "resultMSG">ooops</p>
-		<button id           = "anotherRound">Another Round</button>
+	<video id       = "videoSource" muted autoplay width="240px" height="200px"></video>
+	<a id           = "Catch"></a>
+	<a id           = "distanceRemained"></a>
+	<div id         = "result">
+		<p id          = "resultMSG">ooops</p>
+		<button id     = "anotherRound">Another Round</button>
 	</div>
-	<div id               = "waitForReady">
-		<p id                = "readyMSG">ooops</p>
-		<button id           = "iAmReady">I Am Ready!</button>
+	<div id         = "waitForReady">
+		<p id          = "readyMSG">ooops</p>
+		<button id     = "iAmReady">I Am Ready!</button>
 	</div>
 </body>
-<script src            = "js/vendor/three.min.js"></script>
-<script src            = "js/vendor/THREEx.KeyboardState.js"></script>
-<script src            = "js/vendor/clmtrackr.js"></script>
+<script src      = "js/vendor/three.min.js"></script>
+<script src      = "js/vendor/THREEx.KeyboardState.js"></script>
+<script src      = "js/vendor/clmtrackr.js"></script>
 
-<script src            = "js/vendor/camera.js"></script>	
-<script src            = "js/vendor/model_pca_20_svm.js"></script>
-<script src            = "js/vendor/OrbitControls.js"></script>
-<script src            = "/socket.io/socket.io.js"></script>
+<script src      = "js/vendor/camera.js"></script>	
+<script src      = "js/vendor/model_pca_20_svm.js"></script>
+<!-- <script src = "js/vendor/OrbitControls.js"></script> -->
+<script src      = "/socket.io/socket.io.js"></script>
 
-<script src            = "js/initScene.js"></script>
-<script src            = "js/mechanic.js"></script>
-<script src            = "js/socket.js"></script>
-<script src            = "js/result.js"></script>
-<script src            = "js/game.js"></script>
+<script src      = "js/initScene.js"></script>
+<script src      = "js/mechanic.js"></script>
+<script src      = "js/socket.js"></script>
+<script src      = "js/result.js"></script>
+<script src      = "js/game.js"></script>
 <script>
 
 
-//CONTROLS
-var controls           = new THREE.OrbitControls( camera );
-// controls.addEventListener( 'change', render );
-
-
-
-
-
-
-var updateJerry        = function(){
-	// jerry.position.z +=jerrySpeed;
-}
-
-
-var updateTom          = function(){
-
-	// if(keyboard.pressed("left")) tom.position.x -= 0.05;
-	// if(keyboard.pressed("right")) tom.position.x += 0.05;
-
-
-	faceDetection();
-	if(aPos){
-		shift                = tomMetaShift*(aPos[0]-120)/1200; //120~-120
-		// camera.position.x = 20*((240-aPos[0])/240-0.5); //10- -10
-	}
-	tom.position.x       -=shift;
-	tom.position.x        = Math.max(tom.position.x,-groundWidth/2);
-	tom.position.x        = Math.min(tom.position.x,groundWidth/2);
-
-
-}
-
-// socket.emit('reset');
 waitForReady();
 
-var render             = function () {
-
+var render       = function () {
 	if (gameStop) return;
-
 	result();
-	if(((tom.position.z-jerry.position.z)<cubeSize)&& (!isHit(jerry,tom)) && (!isHit(jerry,food)))  {
-		console.log('nextTom invoked');
-		nextTom();
-	};				
-	updateTom();
-	// updateJerry();
+	nextTom();			
+	updateCharacter(tom);
 	emitPosition(tom);
 	setCamera(tom.position.x,tom.position.y,tom.position.z);
+	// updateJerry();
+	// updateJerrySpeed();
 	updateDistanceRemained();
-	updateJerrySpeed();
-	// controls.update;
 	renderer.render(scene, camera);
 };
-
-function animate() {
-
-	requestAnimationFrame( animate );
-
-	render();
-
-}
 
 animate();
 

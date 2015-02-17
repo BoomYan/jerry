@@ -41,10 +41,9 @@
 	}
 	document.getElementById('iAmReady').onclick            = function(){
 		socket.emit('ready',{'role':role});
-		document.getElementById('readyMSG').innerHTML         = 'Waiting for your opponent...';
+		document.getElementById('readyMSG').innerHTML         = 'Waiting for your opponent···';
 
 	}
-
 
 	socket.on('resetAll', function(){
 		reset();
@@ -55,6 +54,13 @@
 		startGame();
 	});
 
+	function animate() {
+
+		requestAnimationFrame( animate );
+
+		render();
+
+	}
 
 
 
@@ -63,4 +69,5 @@
 	exports.startGame                                      = startGame;
 	exports.stopGame                                       = stopGame;
 	exports.waitForReady                                   = waitForReady;
+	exports.animate                                        = animate;
 })(this);
