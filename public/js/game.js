@@ -69,33 +69,11 @@
 	}
 
 	document.getElementById('playAsTom').onclick =function(){
-		if(selectedRoleByOpponent=='tom'){
-			document.getElementById('roleMSG').innerHTML = 'Sorry,Tom has been selected by your opponent T.T';
-			return;
-		}
-		else{
-		//selectRole Sucessfully
-		role='tom';
 		socket.emit('IWantToPlayAs',{'role':'tom'});
-
-		waitForReady();
-		}
-
 	}
 
 	document.getElementById('playAsJerry').onclick =function(){
-		if(selectedRoleByOpponent=='jerry'){
-			document.getElementById('roleMSG').innerHTML = 'Sorry,Jerry has been selected by your opponent T.T';
-			return;
-		}
-		else{
-		//selectRole Sucessfully
-		role='jerry';
 		socket.emit('IWantToPlayAs',{'role':'jerry'});
-
-
-		waitForReady();
-		}
 	}
 
 
@@ -108,9 +86,18 @@
 		startGame();
 	});
 
-	socket.on('selectedRoleByOpponent',function(data){
-		selectedRoleByOpponent = data.role;
+	socket.on('roleSelectedByOpponent',function(data){
+		document.getElementById('roleMSG').innerHTML = 'Sorry, '+data.role+' has been selected by your opponent T.T';
 	});
+
+	socket.on('roleSelectedDone', function(data){
+		role = data.role;
+		waitForReady();
+	});
+
+	// socket.on('selectedRoleByOpponent',function(data){
+	// 	selectedRoleByOpponent = data.role;
+	// });
 
 	function animate() {
 

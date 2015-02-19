@@ -10,7 +10,7 @@
 	}
 
 	var toggleFPV                                          = function(){
-		if(keyboard.pressed("space") && !alreadyToggled){
+		if(keyboard.pressed("space") && !alreadyToggledFPV){
 			fpv                                                  = !fpv;
 			alreadyToggledFPV                                       = true;
 			// console.log("toggleFPV is invoked");

@@ -20,7 +20,7 @@ server.listen(portNumber);
 // console.log(portNumber);
 
 app.get('/', function (req, res) {
-	res.sendFile(__dirname + '/home.html');
+	res.sendFile(__dirname + '/game.html');
 });
 
 app.get('/game', function (req, res) {
@@ -69,8 +69,11 @@ io.on('connection', function (socket) {
 		}
 	});
 	socket.on('IWantToPlayAs',function(data){
-		selectedRole = data.role;
-		socket.broadcast.emit('selectedRoleByOpponent',{'role':selectedRole});
+		if(selectedRole == data.role)socket.emit('roleSelectedByOpponent',data);
+		else{
+			selectedRole = data.role;
+			socket.emit('roleSelectedDone',data);
+		}
 	});  
 
 });

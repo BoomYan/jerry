@@ -2,7 +2,7 @@
 
 	//UNIVERSAL VARIABLES
 	var cubeSize               = 1;
-	var disBetTandJ            = 10;
+	var disBetTandJ            = 12;
 	var metaNormalSpeed        = 0.05;
 	var normalSpeed            = 0.05;
 	var jerrySpeed             = normalSpeed;//0.08
@@ -21,7 +21,7 @@
 	var gameStop               = true;
 	var tomReady               = false;
 	var jerryReady             = false;
-	var fpv                    = false;
+	var fpv                    = true;
 	var selectedRoleByOpponent = '';
 
 	exports.cubeSize           = cubeSize;
