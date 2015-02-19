@@ -16,11 +16,13 @@
 	var jerryMetaShift         = 5;
 	var tomMetaShift           = 2;
 	var hitScale               = 1.0;//when detecting catch
-	var role                   = document.location.pathname.slice(1);
+	//var role                   = document.location.pathname.slice(1);
+	var role  				   = '';
 	var gameStop               = true;
 	var tomReady               = false;
 	var jerryReady             = false;
 	var fpv                    = false;
+	var selectedRoleByOpponent = '';
 
 	exports.cubeSize           = cubeSize;
 	exports.disBetTandJ        = disBetTandJ;
@@ -42,6 +44,7 @@
 	exports.tomReady           = tomReady;
 	exports.jerryReady         = jerryReady;
 	exports.fpv                = fpv;
+	exports.selectedRoleByOpponent = selectedRoleByOpponent;
 
 	//SOCKET
 	var socket                 = io.connect('http://' + location.host);
@@ -56,8 +59,6 @@
 		var positions             = ctracker.getCurrentPosition();
 		exports.aPos              = positions[33];
 	}
-
-
 
 
 	//SCENE
@@ -81,9 +82,6 @@
 
 	var camera                 = new THREE.PerspectiveCamera( 90, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-	if (role == "jerry"){
-		camera.rotation.y         = 180 * Math.PI / 180;
-	}
 
 
 	//CONTROLS

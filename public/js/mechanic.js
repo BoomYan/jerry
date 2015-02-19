@@ -1,20 +1,21 @@
 (function (exports){
 
-	var alreadyToggled                                     = false;
+	var alreadyToggledFPV                                     = false;
 
 	var nextTom                                            = function(){
 		if(((jerry.position.z-tom.position.z)>=cubeSize)&& (!isHit(jerry,tom)) && (!isHit(jerry,food))){
 			tom.position.z                                       = tom.position.z+disBetTandJ;
+			console.log("nextTom invoked");
 		}
 	}
 
 	var toggleFPV                                          = function(){
 		if(keyboard.pressed("space") && !alreadyToggled){
 			fpv                                                  = !fpv;
-			alreadyToggled                                       = true;
+			alreadyToggledFPV                                       = true;
 			// console.log("toggleFPV is invoked");
 		}
-		if(!keyboard.pressed("space")) alreadyToggled         = false;
+		if(!keyboard.pressed("space")) alreadyToggledFPV         = false;
 	}
 
 	var setCamera                                          = function(x,y,z){

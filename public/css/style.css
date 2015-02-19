@@ -60,3 +60,28 @@ a {font-size: 80px;color:blue;}
 	font-family: "Comic Sans MS", cursive, sans-serif;
 	color: white;
 }
+
+#selectRole{
+	position: absolute;
+	width: 1000px;
+	height: 400px;
+	left: 50%;
+	top: 60%;
+	margin-left: -500px;
+	margin-top: -200px;
+	text-align: center;
+	display: none;
+	z-index: 2;
+}
+#roleMSG{
+	font-size: 30px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: white;
+}
+
+
+
+
+
+
+

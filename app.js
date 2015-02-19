@@ -6,6 +6,7 @@ var ejs        = require('ejs');
 var portNumber = process.env.PORT || 1234;
 var tomReady   = false;
 var jerryReady = false;
+var selectedRole = '';
 
 app.set('views', __dirname); //????????????
 
@@ -20,6 +21,10 @@ server.listen(portNumber);
 
 app.get('/', function (req, res) {
 	res.sendFile(__dirname + '/home.html');
+});
+
+app.get('/game', function (req, res) {
+	res.sendFile(__dirname + '/game.html');
 });
 
 app.get('/tom', function (req, res) {
@@ -58,8 +63,14 @@ io.on('connection', function (socket) {
 		if(tomReady && jerryReady){
 			tomReady    = false;
 			jerryReady  = false;
-			io.sockets.emit('startGame',data);
+			io.sockets.emit('startGame');
+
+			selectedRole = '';
 		}
-	});    
+	});
+	socket.on('IWantToPlayAs',function(data){
+		selectedRole = data.role;
+		socket.broadcast.emit('selectedRoleByOpponent',{'role':selectedRole});
+	});  
 
 });
