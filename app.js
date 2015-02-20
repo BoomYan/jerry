@@ -20,7 +20,7 @@ server.listen(portNumber);
 // console.log(portNumber);
 
 app.get('/', function (req, res) {
-	res.sendFile(__dirname + '/game.html');
+	res.sendFile(__dirname + '/home.html');
 });
 
 app.get('/game', function (req, res) {
