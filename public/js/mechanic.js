@@ -31,9 +31,18 @@
 		}
 		camera.position.y                                     = y;
 		camera.position.z                                     = z;
-	
+		
 	}
 
+	var setPointLight                                          = function(x,y,z){
+
+		// // setInterval(toggleFPV,1000);
+		// toggleFPV();
+		pointLight.position.x                                     = x;
+		pointLight.position.y                                     = y;
+		pointLight.position.z                                     = z;
+		
+	}
 
 	var isHit                                              = function(a,b){
 		var disBet;
@@ -107,6 +116,7 @@
 	exports.isHit                                          = isHit;
 	exports.updateJerrySpeed                               = updateJerrySpeed;
 	exports.updateCharacter                                = updateCharacter;
+	exports.setPointLight								   = setPointLight;
 
 
 
