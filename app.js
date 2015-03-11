@@ -74,6 +74,9 @@ io.on('connection', function (socket) {
 			selectedRole = data.role;
 			socket.emit('roleSelectedDone',data);
 		}
-	});  
+	}); 
+	socket.on('jerryBlood',function(data){
+		io.sockets.emit('jerryBlood',data);
+	})
 
 });

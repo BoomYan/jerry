@@ -20,7 +20,10 @@
 
 	});
 
-
+	socket.on('jerryBlood',function(data){
+		document.getElementById('bloodRemained').innerHTML = 'Body Temperature of Jerry: '+data.jerryBlood;
+		jerryBlood = data.jerryBlood;
+	});
 
 	exports.emitPosition = emitPosition;
 

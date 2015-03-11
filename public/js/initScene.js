@@ -23,6 +23,9 @@
 	var jerryReady                 = false;
 	var fpv                        = true;
 	var selectedRoleByOpponent     = '';
+	var jerryBlood					   = 100;
+	var metaBloodDecrease		   = 1;
+	var tomHeatRange			   = 5;
 
 	exports.cubeSize               = cubeSize;
 	exports.disBetTandJ            = disBetTandJ;
@@ -45,7 +48,9 @@
 	exports.jerryReady             = jerryReady;
 	exports.fpv                    = fpv;
 	exports.selectedRoleByOpponent = selectedRoleByOpponent;
-
+	exports.jerryBlood			   = jerryBlood;
+	exports.metaBloodDecrease	   = metaBloodDecrease;
+	exports.tomHeatRange		   = tomHeatRange;
 	//SOCKET
 	var socket                     = io.connect('http://' + location.host);
 

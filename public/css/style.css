@@ -30,6 +30,14 @@ a {font-size: 80px;color:blue;}
 	font-size: 50px;
 }
 
+#bloodRemained{
+	position: absolute;
+	top: 5%;
+	color:white;
+	font-size: 50px;
+	text-align:right;
+}
+
 #result{
 	position: absolute;
 	width: 1000px;

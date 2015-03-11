@@ -22,10 +22,20 @@
 		else
 			document.getElementById('resultMSG').innerHTML = 'You lose!! You missed the food!!';
 	}
-
+	var jerryNoBlood                           = function(){
+		stopGame();    
+		if (role == 'tom')
+			document.getElementById('resultMSG').innerHTML = 'Yay, you win!! Jerry died!!';
+		else
+			document.getElementById('resultMSG').innerHTML = 'You lose!! You died!!';
+	}
 
 
 	var result                                       = function(){
+		if(jerryBlood<=0){
+			jerryNoBlood();
+			return;
+		}
 
 		if(isHit(jerry,tom)){
 			tomCatchedJerry();

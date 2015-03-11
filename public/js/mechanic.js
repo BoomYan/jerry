@@ -1,10 +1,22 @@
 (function (exports){
 
 	var alreadyToggledFPV                                     = false;
+	var disBetTandJOnX = 0; // for feedback system
 
 	var nextTom                                            = function(){
-		if(((jerry.position.z-tom.position.z)>=cubeSize)&& (!isHit(jerry,tom)) && (!isHit(jerry,food))){
+		if(((jerry.position.z-tom.position.z)>=0)&& (!isHit(jerry,tom)) && (!isHit(jerry,food))){
 			tom.position.z                                       = tom.position.z+disBetTandJ;
+			if(Math.abs(jerry.position.x-tom.position.x) > disBetTandJOnX){
+				tomMetaShift += 0.7;
+				disBetTandJOnX = Math.abs(jerry.position.x-tom.position.x);
+				console.log("tomMetaShift: "+tomMetaShift);
+			}
+			else{
+				tomMetaShift -=0.4;
+				isBetTandJOnX = Math.abs(jerry.position.x-tom.position.x);
+				console.log("tomMetaShift: "+tomMetaShift);
+			}
+
 			console.log("nextTom invoked");
 		}
 	}
@@ -60,13 +72,30 @@
 
 
 	var updateDistanceRemained                             = function(){
-		var distanceRemained                                  = Math.round(food.position.z-jerry.position.z-3*cubeSize);
+		var distanceRemained                                  = Math.round((food.position.z-jerry.position.z-3*cubeSize)*10)/10;
 		document.getElementById('distanceRemained').innerHTML = 'Distance Remained For Jerry: '+distanceRemained;
 	}
 
 	var updateJerrySpeed                                   = function(){
 		jerrySpeed                                            = normalSpeed * (1+5*(targetDistance - distanceRemained)/targetDistance);
 		// console.log(jerrySpeed);				
+	}
+	var updateJerryBlood                                    = function(){
+		var distanceForBlood = Math.sqrt(Math.pow((jerry.position.x - tom.position.x),2)+Math.pow((jerry.position.z - tom.position.z),2));
+		
+
+		if(distanceForBlood<tomHeatRange)
+		{
+			jerryBlood += (tomHeatRange - distanceForBlood)*metaBloodDecrease/tomHeatRange;
+
+
+		}
+		else{
+			jerryBlood = jerryBlood - metaBloodDecrease*0.2;
+		}
+
+		jerryBlood = Math.round(jerryBlood*10)/10;
+		socket.emit('jerryBlood', {'jerryBlood': jerryBlood});  
 	}
 
 
@@ -95,6 +124,8 @@
 		// console.log('updateMe invoked');
 	}
 
+
+
 	//Following codes are for single player
 	var updateTom                                          = function(){
 		// var step                                           = 0.3
@@ -117,7 +148,7 @@
 	exports.updateJerrySpeed                               = updateJerrySpeed;
 	exports.updateCharacter                                = updateCharacter;
 	exports.setPointLight								   = setPointLight;
-
+	exports.updateJerryBlood							   = updateJerryBlood;
 
 
 })(this);

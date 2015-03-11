@@ -7,6 +7,7 @@
 	<video id       = "videoSource" muted autoplay width="240px" height="200px"></video>
 	<a id           = "Catch"></a>
 	<a id           = "distanceRemained"></a>
+	<a id           = "bloodRemained"></a>
 	<div id         = "result">
 		<p id          = "resultMSG">ooops</p>
 		<button id     = "anotherRound">Another Round</button>
@@ -52,6 +53,7 @@ var render       = function () {
 	}
 	else{
 		updateCharacter(jerry);
+		updateJerryBlood();
 		emitPosition(jerry);
 		setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
 		setPointLight(jerry.position.x,jerry.position.y,jerry.position.z);
