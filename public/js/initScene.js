@@ -2,16 +2,16 @@
 
 	//UNIVERSAL VARIABLES
 	var cubeSize                   = 1;
-	var disBetTandJ                = 12;
-	var metaNormalSpeed            = 0.05;
-	var normalSpeed                = 0.05;
-	var jerrySpeed                 = normalSpeed;//0.08
+	// var metaNormalSpeed            = 0.05;
+	// var normalSpeed                = 0.05;
+	var jerrySpeed                 = 0.1;//0.1
 	var aPos;
 	var shift                      = 0;//for tom and jerry to shift
 	var keyboard                   = new THREEx.KeyboardState();
 	var groundWidth                = 20;
 	var wallShift                  = 0;
-	var targetDistance             = 100;
+	var targetDistance             = 200;
+	var disBetTandJ                = targetDistance/10;
 	var distanceRemained           = targetDistance;
 	var jerryMetaShift             = 5;
 	var tomMetaShift               = 2;
@@ -23,14 +23,14 @@
 	var jerryReady                 = false;
 	var fpv                        = true;
 	var selectedRoleByOpponent     = '';
-	var jerryBlood					   = 100;
+	var jerryBlood				   = 100;
 	var metaBloodDecrease		   = 1;
-	var tomHeatRange			   = 5;
+	var tomHeatRange			   = groundWidth/3;
 
 	exports.cubeSize               = cubeSize;
 	exports.disBetTandJ            = disBetTandJ;
-	exports.metaNormalSpeed        = metaNormalSpeed;
-	exports.normalSpeed            = normalSpeed;
+	// exports.metaNormalSpeed        = metaNormalSpeed;
+	// exports.normalSpeed            = normalSpeed;
 	exports.jerrySpeed             = jerrySpeed;//0.08
 	exports.aPos                   = aPos;
 	exports.shift                  = shift;
@@ -124,19 +124,15 @@
 
 
 	var groundGeo                  = new THREE.PlaneBufferGeometry( 10000, 10000 );
-	// var groundMat                  = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
-	// groundMat.color.setHSL( 0.095, 1, 0.75 );
 	var ground                     = new THREE.Mesh( groundGeo, materialCanvas );
 	ground.rotation.x              = -Math.PI/2;
-	ground.position.y              = -3;
+	ground.position.y              = -cubeSize*2;
 	scene.add( ground );
 
 	ground.receiveShadow           = true;
 
 	// RIGHT WALL
 	var rightWallGeo               = new THREE.PlaneBufferGeometry( 10000, 10000 );
-	// var rightWallMat               = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
-	// rightWallMat.color.setHSL( 0.05, 1, 0.2 );
 	var rightWall                  = new THREE.Mesh( rightWallGeo, materialCanvas  );
 	rightWall.rotation.y           = - Math.PI/2
 	rightWall.position.x           = groundWidth/2 + cubeSize/2 + wallShift;
@@ -146,22 +142,12 @@
 
 	// LEFT WALL
 	var leftWallGeo                = new THREE.PlaneBufferGeometry( 10000, 10000 );
-	// var leftWallMat                = new THREE.MeshPhongMaterial( { ambient: 0xffffff, color: 0xffffff, specular: 0x050505 } );
-	// leftWallMat.color.setHSL( 0.05, 1, 0.2 );
 	var leftWall                   = new THREE.Mesh( leftWallGeo, materialCanvas  );
 	leftWall.rotation.y            = Math.PI/2
 	leftWall.position.x            = -groundWidth/2 - cubeSize/2- wallShift;
 	scene.add( leftWall );
 
 	leftWall.receiveShadow         = true;
-
-	// //Cube0
-
-	// var geometry                = new THREE.BoxGeometry( 1, 1, 1 );
-	// var material                = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-	// var cube0                   = new THREE.Mesh( geometry, material );
-	// scene.add( cube0 );
-	// cube0.position.z            = -100;
 
 	//Cube1 - Jerry
 

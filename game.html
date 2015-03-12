@@ -42,24 +42,23 @@ waitForSelect();
 
 
 var render       = function () {
+
 	if (gameStop) return;
+
+	var character;
+
+	if (role == 'tom')me= tom;
+	else	me = jerry;
+
 	result();
-	if (role == 'tom'){
-		nextTom();			
-		updateCharacter(tom);
-		emitPosition(tom);
-		setCamera(tom.position.x,tom.position.y,tom.position.z);
-		setPointLight(tom.position.x,tom.position.y,tom.position.z);
-	}
-	else{
-		updateCharacter(jerry);
-		updateJerryBlood();
-		emitPosition(jerry);
-		setCamera(jerry.position.x,jerry.position.y,jerry.position.z);
-		setPointLight(jerry.position.x,jerry.position.y,jerry.position.z);
-	}
-	// updateJerry();
-	// updateJerrySpeed();
+	updateCharacter(me);
+	emitPosition(me);
+	setCamera(me.position.x,me.position.y+cubeSize,me.position.z);
+	setPointLight(me.position.x,me.position.y,me.position.z);
+
+	if (role == 'tom')	nextTom();			
+	else	updateJerryBlood();
+
 	updateDistanceRemained();
 	renderer.render(scene, camera);
 };

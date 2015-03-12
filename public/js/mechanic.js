@@ -36,10 +36,10 @@
 		toggleFPV();
 		camera.position.x                                     = x;
 		if(!fpv){
-			if(role=="tom")	z=z+2;
-			else z                                               = z-2;
+			if(role=="tom")	z=z+cubeSize*2;
+			else z                                               = z-cubeSize*2;
 
-			y                                                    = y+2;
+			y                                                    = y+cubeSize;
 		}
 		camera.position.y                                     = y;
 		camera.position.z                                     = z;
