@@ -80,11 +80,11 @@
 	}
 
 	document.getElementById('playAsTom').onclick               = function(){
-		socket.emit('IWantToPlayAs',{'role':'tom'});
+		socket.emit('IWantToPlayAs',{'role':'tom','roomNum':roomNum});
 	}
 
 	document.getElementById('playAsJerry').onclick             = function(){
-		socket.emit('IWantToPlayAs',{'role':'jerry'});
+		socket.emit('IWantToPlayAs',{'role':'jerry','roomNum':roomNum});
 	}
 
 
@@ -101,7 +101,7 @@
 		document.getElementById('roleMSG').innerHTML              = 'Sorry, '+data.role+' has been selected by your opponent T.T';
 	});
 
-	socket.on('roleSelectedDone', function(data){
+	socket.on('roleSelected', function(data){
 		role                                                      = data.role;
 		waitForReady();
 	});

@@ -26,6 +26,7 @@
 	var jerryBlood				   = 100;
 	var metaBloodDecrease		   = 1;
 	var tomHeatRange			   = groundWidth/3;
+	var roomNum					   = document.location.pathname.slice(1);
 
 	exports.cubeSize               = cubeSize;
 	exports.disBetTandJ            = disBetTandJ;
@@ -51,6 +52,7 @@
 	exports.jerryBlood			   = jerryBlood;
 	exports.metaBloodDecrease	   = metaBloodDecrease;
 	exports.tomHeatRange		   = tomHeatRange;
+	exports.roomNum				   = roomNum;
 	//SOCKET
 	var socket                     = io.connect('http://' + location.host);
 
