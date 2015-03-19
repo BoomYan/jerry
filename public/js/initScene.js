@@ -173,7 +173,7 @@
 	//Cube3	- Food
 
 	var foodGeometry               = new THREE.BoxGeometry( cubeSize*5, cubeSize*5, cubeSize*5 );
-	var foodMaterial               = new THREE.MeshLambertMaterial( { color: 0x777777 } );
+	var foodMaterial               = new THREE.MeshLambertMaterial( { color: 0x770000 } );
 	var food                       = new THREE.Mesh( foodGeometry, foodMaterial );
 	food.position.z                = targetDistance;
 	scene.add( food );
