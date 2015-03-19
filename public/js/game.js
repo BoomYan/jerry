@@ -89,7 +89,7 @@
 		document.getElementById("distanceRemained").style.display = "none";
 		document.getElementById("bloodRemained").style.display    = "none";
 
-		//document.getElementById('iAmReady').style.display			= "none";
+		document.getElementById('iAmReady').style.display			= "";
 	}
 
 	document.getElementById('anotherRound').onclick            = function(){
@@ -101,8 +101,8 @@
 	}
 	document.getElementById('iAmReady').onclick                = function(){
 		socket.emit('iAmReady',{'role':role});
-		document.getElementById('readyMSG').innerHTML             = '<p>Waiting for your opponent··· <br></br> To invite your friend, just give him this URL:<U>'+window.location.protocol + "//" + window.location.host + "/" + window.location.pathname+'</u></p>';
-		//document.getElementById('iAmReady').style.display			= "block";
+		document.getElementById('readyMSG').innerHTML             = '<p>Waiting for your opponent··· <br></br> To invite your friend, just share this URL:<U>'+window.location.protocol + "//" + window.location.host + "" + window.location.pathname+'</u></p>';
+		document.getElementById('iAmReady').style.display			= "none";
 	}
 
 	document.getElementById('playAsTom').onclick               = function(){

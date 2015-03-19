@@ -188,6 +188,12 @@
 	renderer.shadowMapCullFace     = THREE.CullFaceBack;
 	document.body.appendChild( renderer.domElement );
 
+  	function onWindowResize() {
+    	camera.aspect = window.innerWidth / window.innerHeight;
+    	camera.updateProjectionMatrix();
+    	renderer.setSize(window.innerWidth, window.innerHeight);
+  	}
+
 	exports.socket                 = socket;
 	exports.ctracker               = ctracker;
 	exports.scene                  = scene;
@@ -199,6 +205,7 @@
 	exports.renderer               = renderer;
 	exports.faceDetection          = faceDetection;
 	exports.pointLight             = pointLight;
+
 
 })(this);
 
