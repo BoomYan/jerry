@@ -84,7 +84,8 @@ io.on('connection', function (socket) {
 	}
 
 	function resetLookUpTable(){
-		lookUpTable[roomNumOfSocket][roleNumOfSocket] = null;
+		lookUpTable[roomNumOfSocket][0] = null;
+		lookUpTable[roomNumOfSocket][1] = null;
 	}
 
 	function sendDataToYourOpponent(msg,data){
